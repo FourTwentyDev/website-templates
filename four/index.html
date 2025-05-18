@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiveM Server Template</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10.12.16/dist/framer-motion.js"></script>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Lenis for smooth scrolling -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <!-- SF Pro Display Font -->
+    <link href="https://fonts.cdnfonts.com/css/sf-pro-display" rel="stylesheet">
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sf': ['SF Pro Display', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        kindle: {
+                            paper: '#F8F5F1',
+                            text: '#2D2D2D',
+                            accent: '#9C8E75',
+                            muted: '#B4B4B4',
+                            dark: '#1A1A1A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-kindle-paper text-kindle-text font-inter antialiased" data-lenis-prevent-wheel>
+    <!-- Progress Bar -->
+    <div class="fixed top-0 left-0 w-full h-0.5 bg-kindle-accent/20 z-50">
+        <div class="progress-bar h-full bg-kindle-accent origin-left"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-40 transition-all duration-300 mix-blend-difference" data-nav>
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex items-center justify-between">
+                <a href="#" class="text-2xl font-sf font-medium tracking-tight">
+                    Server Name
+                </a>
+                <button class="menu-toggle p-2 hover:bg-kindle-text/5 rounded-full transition-colors">
+                    <i class="ri-menu-line text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Menu Overlay -->
+        <div class="fixed inset-0 bg-kindle-paper opacity-0 pointer-events-none transition-opacity duration-300" data-menu-overlay>
+            <div class="container mx-auto px-4 py-20">
+                <div class="space-y-8">
+                    <a href="#home" class="block text-4xl font-sf hover:text-kindle-accent hover:bg-kindle-text/[0.06] dark:hover:bg-kindle-paper/[0.06] transition-all bg-kindle-text/[0.04] dark:bg-kindle-paper/[0.04] px-6 py-2 rounded-lg">Home</a>
+                    <a href="#about" class="block text-4xl font-sf hover:text-kindle-accent hover:bg-kindle-text/[0.06] dark:hover:bg-kindle-paper/[0.06] transition-all bg-kindle-text/[0.04] dark:bg-kindle-paper/[0.04] px-6 py-2 rounded-lg">About</a>
+                    <a href="#team" class="block text-4xl font-sf hover:text-kindle-accent hover:bg-kindle-text/[0.06] dark:hover:bg-kindle-paper/[0.06] transition-all bg-kindle-text/[0.04] dark:bg-kindle-paper/[0.04] px-6 py-2 rounded-lg">Team</a>
+                    <a href="#rules" class="block text-4xl font-sf hover:text-kindle-accent hover:bg-kindle-text/[0.06] dark:hover:bg-kindle-paper/[0.06] transition-all bg-kindle-text/[0.04] dark:bg-kindle-paper/[0.04] px-6 py-2 rounded-lg">Rules</a>
+                    <a href="#join" class="block text-4xl font-sf hover:text-kindle-accent hover:bg-kindle-text/[0.06] dark:hover:bg-kindle-paper/[0.06] transition-all bg-kindle-text/[0.04] dark:bg-kindle-paper/[0.04] px-6 py-2 rounded-lg">Join</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex items-center justify-center relative">
+            <div class="container mx-auto px-4 py-20">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-6xl md:text-8xl font-sf font-medium tracking-tight mb-6">
+                        Server Name
+                    </h1>
+                    <p class="text-xl md:text-2xl text-kindle-text/70 mb-12 font-light">
+                        Your Ultimate FiveM Experience
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="#join" class="px-8 py-4 bg-kindle-text text-kindle-paper rounded-full hover:bg-kindle-text/90 transition-colors">
+                            Join Now
+                        </a>
+                        <a href="#about" class="px-8 py-4 border border-kindle-text/20 rounded-full hover:bg-kindle-text/5 transition-colors">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-sf font-medium tracking-tight mb-16 text-center">About Our Server</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="p-8 border border-kindle-text/10 rounded-2xl hover:border-kindle-text/20 transition-all">
+                        <i class="ri-gamepad-line text-3xl mb-6"></i>
+                        <h3 class="text-2xl font-sf mb-4">Features</h3>
+                        <p class="text-kindle-text/70">Experience unique gameplay features and custom content.</p>
+                    </div>
+                    <div class="p-8 border border-kindle-text/10 rounded-2xl hover:border-kindle-text/20 transition-all">
+                        <i class="ri-team-line text-3xl mb-6"></i>
+                        <h3 class="text-2xl font-sf mb-4">Community</h3>
+                        <p class="text-kindle-text/70">Join our friendly and active community of players.</p>
+                    </div>
+                    <div class="p-8 border border-kindle-text/10 rounded-2xl hover:border-kindle-text/20 transition-all">
+                        <i class="ri-customer-service-2-line text-3xl mb-6"></i>
+                        <h3 class="text-2xl font-sf mb-4">Support</h3>
+                        <p class="text-kindle-text/70">24/7 support team ready to help you with any issues.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="team" class="py-20 bg-kindle-text/5">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-sf font-medium tracking-tight mb-16 text-center">Our Team</h2>
+                
+                <!-- Owner Section -->
+                <div class="mb-16">
+                    <h3 class="text-2xl font-sf mb-8 text-center flex items-center justify-center">
+                        <i class="ri-vip-crown-line mr-2"></i> Owner
+                    </h3>
+                    <div class="max-w-lg mx-auto">
+                        <div class="p-8 bg-kindle-paper border border-kindle-text/10 rounded-2xl text-center">
+                            <div class="w-24 h-24 rounded-full mx-auto mb-6 overflow-hidden">
+                                <img src="https://placehold.co/96x96" alt="Server Owner" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="text-xl font-sf mb-2">Server Owner</h3>
+                            <p class="text-kindle-text/70 mb-6">Founder & Lead Developer</p>
+                            <div class="flex justify-center space-x-4">
+                                <a href="#" class="hover:text-kindle-accent transition-colors">
+                                    <i class="ri-discord-line text-xl"></i>
+                                </a>
+                                <a href="#" class="hover:text-kindle-accent transition-colors">
+                                    <i class="ri-steam-line text-xl"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Staff Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="p-8 bg-kindle-paper border border-kindle-text/10 rounded-2xl text-center">
+                        <div class="w-20 h-20 rounded-full mx-auto mb-6 overflow-hidden">
+                            <img src="https://placehold.co/80x80" alt="Admin" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-sf mb-2">Admin Name</h3>
+                        <p class="text-kindle-text/70 mb-6">Administrator</p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="#" class="hover:text-kindle-accent transition-colors">
+                                <i class="ri-discord-line text-xl"></i>
+                            </a>
+                            <a href="#" class="hover:text-kindle-accent transition-colors">
+                                <i class="ri-steam-line text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="p-8 bg-kindle-paper border border-kindle-text/10 rounded-2xl text-center">
+                        <div class="w-20 h-20 rounded-full mx-auto mb-6 overflow-hidden">
+                            <img src="https://placehold.co/80x80" alt="Moderator" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-sf mb-2">Mod Name</h3>
+                        <p class="text-kindle-text/70 mb-6">Moderator</p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="#" class="hover:text-kindle-accent transition-colors">
+                                <i class="ri-discord-line text-xl"></i>
+                            </a>
+                            <a href="#" class="hover:text-kindle-accent transition-colors">
+                                <i class="ri-steam-line text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="p-8 bg-kindle-paper border border-kindle-text/10 rounded-2xl text-center">
+                        <div class="w-20 h-20 rounded-full mx-auto mb-6 overflow-hidden">
+                            <img src="https://placehold.co/80x80" alt="Support" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-sf mb-2">Support Name</h3>
+                        <p class="text-kindle-text/70 mb-6">Support Team</p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="#" class="hover:text-kindle-accent transition-colors">
+                                <i class="ri-discord-line text-xl"></i>
+                            </a>
+                            <a href="#" class="hover:text-kindle-accent transition-colors">
+                                <i class="ri-steam-line text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rules Section -->
+        <section id="rules" class="py-20">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-sf font-medium tracking-tight mb-16 text-center">Server Rules</h2>
+                <div class="max-w-3xl mx-auto">
+                    <div class="p-8 border border-kindle-text/10 rounded-2xl">
+                        <div class="flex items-center mb-8">
+                            <i class="ri-shield-check-line text-2xl mr-4"></i>
+                            <h3 class="text-2xl font-sf">General Rules</h3>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex items-center text-kindle-text/70">
+                                <i class="ri-checkbox-circle-line mr-3"></i>
+                                Respect all players and staff members
+                            </li>
+                            <li class="flex items-center text-kindle-text/70">
+                                <i class="ri-checkbox-circle-line mr-3"></i>
+                                No cheating or exploiting
+                            </li>
+                            <li class="flex items-center text-kindle-text/70">
+                                <i class="ri-checkbox-circle-line mr-3"></i>
+                                No harassment or discrimination
+                            </li>
+                            <li class="flex items-center text-kindle-text/70">
+                                <i class="ri-checkbox-circle-line mr-3"></i>
+                                Follow staff instructions
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join Section -->
+        <section id="join" class="py-20 bg-kindle-text/5">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-sf font-medium tracking-tight mb-16 text-center">Join Our Server</h2>
+                <div class="max-w-4xl mx-auto">
+                    <!-- Server IP -->
+                    <div class="mb-12 p-8 bg-kindle-paper border border-kindle-text/10 rounded-2xl text-center">
+                        <div class="flex items-center justify-center mb-6">
+                            <i class="ri-server-line text-2xl mr-4"></i>
+                            <h3 class="text-2xl font-sf">Server Address</h3>
+                        </div>
+                        <code class="text-xl font-mono bg-kindle-text/5 px-4 py-2 rounded-lg select-all">your-server-ip</code>
+                    </div>
+
+                    <!-- Join Options -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <a href="#" class="group block p-8 bg-kindle-paper border border-kindle-text/10 rounded-2xl text-center">
+                            <div class="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center border border-kindle-text/10 group-hover:border-kindle-accent transition-colors">
+                                <i class="ri-discord-line text-2xl group-hover:text-kindle-accent transition-colors"></i>
+                            </div>
+                            <h3 class="text-xl font-sf mb-4">Join Discord</h3>
+                            <p class="text-kindle-text/70">Connect with our community</p>
+                        </a>
+
+                        <a href="#" class="group block p-8 bg-kindle-paper border border-kindle-text/10 rounded-2xl text-center">
+                            <div class="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center border border-kindle-text/10 group-hover:border-kindle-accent transition-colors">
+                                <i class="ri-discuss-line text-2xl group-hover:text-kindle-accent transition-colors"></i>
+                            </div>
+                            <h3 class="text-xl font-sf mb-4">Visit Forums</h3>
+                            <p class="text-kindle-text/70">Discuss and share with others</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-kindle-text/10">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-kindle-text/70">&copy; 2025 Server Name. All rights reserved.</p>
+            <div class="mt-4 text-sm">
+                <span class="text-kindle-text/50">Template by</span>
+                <a href="https://fourtwenty.dev" target="_blank" rel="noopener" 
+                   class="inline-flex items-center text-kindle-accent hover:text-kindle-text transition-colors ml-2">
+                    FourTwentyDevs
+                    <i class="ri-external-link-line ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

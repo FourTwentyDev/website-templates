@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiveM Server Template</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Cyberpunk Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'cyber': ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        neon: {
+                            blue: '#00f3ff',
+                            pink: '#ff00ff',
+                            purple: '#bc13fe',
+                            yellow: '#ffff00'
+                        },
+                        cyber: {
+                            dark: '#0a0a0a',
+                            darker: '#050505',
+                            light: '#2a2a2a'
+                        }
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%': { 'text-shadow': '0 0 10px #00f3ff, 0 0 20px #00f3ff, 0 0 30px #00f3ff' },
+                            '100%': { 'text-shadow': '0 0 20px #00f3ff, 0 0 30px #00f3ff, 0 0 40px #00f3ff' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cyber-darker font-cyber text-white overflow-x-hidden">
+    <!-- Particle Background -->
+    <div id="particles-js" class="fixed inset-0 pointer-events-none"></div>
+    
+    <!-- Circular Navigation -->
+    <nav id="circular-nav" class="fixed right-8 top-1/2 -translate-y-1/2 z-50">
+        <div class="relative w-48 h-48">
+            <button id="nav-toggle" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-cyber-light border-2 border-neon-blue flex items-center justify-center hover:scale-110 transition-transform duration-300 z-20">
+                <i class="ri-menu-line text-2xl text-neon-blue"></i>
+            </button>
+            <div id="nav-items" class="absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-300">
+                <!-- Nav items will be positioned absolutely via JavaScript -->
+                <a href="#home" class="nav-item absolute w-12 h-12 rounded-full bg-cyber-light border-2 border-neon-blue flex items-center justify-center hover:scale-110 transition-transform duration-300">
+                    <i class="ri-home-line text-neon-blue"></i>
+                </a>
+                <a href="#about" class="nav-item absolute w-12 h-12 rounded-full bg-cyber-light border-2 border-neon-blue flex items-center justify-center hover:scale-110 transition-transform duration-300">
+                    <i class="ri-information-line text-neon-blue"></i>
+                </a>
+                <a href="#team" class="nav-item absolute w-12 h-12 rounded-full bg-cyber-light border-2 border-neon-blue flex items-center justify-center hover:scale-110 transition-transform duration-300">
+                    <i class="ri-team-line text-neon-blue"></i>
+                </a>
+                <a href="#rules" class="nav-item absolute w-12 h-12 rounded-full bg-cyber-light border-2 border-neon-blue flex items-center justify-center hover:scale-110 transition-transform duration-300">
+                    <i class="ri-shield-check-line text-neon-blue"></i>
+                </a>
+                <a href="#join" class="nav-item absolute w-12 h-12 rounded-full bg-cyber-light border-2 border-neon-blue flex items-center justify-center hover:scale-110 transition-transform duration-300">
+                    <i class="ri-gamepad-line text-neon-blue"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen relative flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <!-- Cyber Grid -->
+            <div class="absolute inset-0 cyber-grid"></div>
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-b from-cyber-darker via-transparent to-cyber-darker"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center">
+                <h1 class="text-6xl md:text-8xl font-bold mb-6 glitch-text">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink animate-glow">
+                        Server Name
+                    </span>
+                </h1>
+                <p class="text-xl md:text-2xl text-neon-blue mb-12 typing-text">Your Ultimate FiveM Experience</p>
+                
+                <!-- Stats Container -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
+                    <div class="stat-card">
+                        <div class="p-6 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-blue rounded-lg hover:scale-105 transition-transform duration-300">
+                            <div class="text-4xl font-bold text-neon-blue mb-2 counter" data-target="500">0</div>
+                            <div class="text-sm uppercase tracking-wider">Active Players</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="p-6 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-pink rounded-lg hover:scale-105 transition-transform duration-300">
+                            <div class="text-4xl font-bold text-neon-pink mb-2 counter" data-target="50">0</div>
+                            <div class="text-sm uppercase tracking-wider">Custom Scripts</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="p-6 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-purple rounded-lg hover:scale-105 transition-transform duration-300">
+                            <div class="text-4xl font-bold text-neon-purple mb-2">24/7</div>
+                            <div class="text-sm uppercase tracking-wider">Support</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="#join" class="cta-button relative group">
+                        <span class="relative z-10 px-8 py-4 inline-flex items-center">
+                            <span class="mr-2">Join Now</span>
+                            <i class="ri-arrow-right-line transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-neon-blue to-neon-purple opacity-50 group-hover:opacity-75 blur transition-opacity"></div>
+                    </a>
+                    <a href="#about" class="cta-button-secondary relative group">
+                        <span class="relative z-10 px-8 py-4 inline-flex items-center">
+                            <span class="mr-2">Learn More</span>
+                            <i class="ri-information-line"></i>
+                        </span>
+                        <div class="absolute inset-0 bg-cyber-light opacity-10 group-hover:opacity-20 transition-opacity"></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold mb-16 text-center">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple">
+                    About Our Server
+                </span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card">
+                    <div class="p-8 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-blue rounded-lg hover:scale-105 transition-transform duration-300">
+                        <div class="w-16 h-16 mb-6 relative">
+                            <div class="absolute inset-0 bg-neon-blue opacity-20 blur-lg rounded-full"></div>
+                            <div class="relative z-10 w-full h-full rounded-full bg-cyber-light border-2 border-neon-blue flex items-center justify-center">
+                                <i class="ri-gamepad-line text-2xl text-neon-blue"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-neon-blue">Features</h3>
+                        <p class="text-gray-300">Experience unique gameplay features and custom content.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="p-8 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-pink rounded-lg hover:scale-105 transition-transform duration-300">
+                        <div class="w-16 h-16 mb-6 relative">
+                            <div class="absolute inset-0 bg-neon-pink opacity-20 blur-lg rounded-full"></div>
+                            <div class="relative z-10 w-full h-full rounded-full bg-cyber-light border-2 border-neon-pink flex items-center justify-center">
+                                <i class="ri-team-line text-2xl text-neon-pink"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-neon-pink">Community</h3>
+                        <p class="text-gray-300">Join our friendly and active community of players.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="p-8 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-purple rounded-lg hover:scale-105 transition-transform duration-300">
+                        <div class="w-16 h-16 mb-6 relative">
+                            <div class="absolute inset-0 bg-neon-purple opacity-20 blur-lg rounded-full"></div>
+                            <div class="relative z-10 w-full h-full rounded-full bg-cyber-light border-2 border-neon-purple flex items-center justify-center">
+                                <i class="ri-customer-service-2-line text-2xl text-neon-purple"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-neon-purple">Support</h3>
+                        <p class="text-gray-300">24/7 support team ready to help you with any issues.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold mb-16 text-center">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple">
+                    Our Team
+                </span>
+            </h2>
+            
+            <!-- Owner Section -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold mb-8 text-center flex items-center justify-center">
+                    <i class="ri-vip-crown-line text-neon-yellow mr-2"></i>
+                    <span class="text-neon-yellow">Owner</span>
+                </h3>
+                
+                <div class="max-w-lg mx-auto">
+                    <div class="team-card-owner p-8 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-yellow rounded-lg text-center relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-neon-yellow/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="w-32 h-32 mx-auto mb-6 relative">
+                                <div class="absolute inset-0 bg-neon-yellow opacity-20 blur-lg rounded-full"></div>
+                                <div class="relative z-10 w-full h-full rounded-full overflow-hidden border-2 border-neon-yellow">
+                                    <img src="https://placehold.co/128x128" alt="Server Owner" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2 text-neon-yellow">Server Owner</h3>
+                            <p class="text-gray-300 mb-6">Founder & Lead Developer</p>
+                            <div class="flex justify-center space-x-4">
+                                <a href="https://discord.gg/placeholder" target="_blank" class="social-link">
+                                    <i class="ri-discord-line text-neon-yellow hover:scale-125 transition-transform"></i>
+                                </a>
+                                <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="social-link">
+                                    <i class="ri-steam-line text-neon-yellow hover:scale-125 transition-transform"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Staff Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Admin Card -->
+                <div class="team-card p-8 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-blue rounded-lg text-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-neon-blue/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="w-24 h-24 mx-auto mb-6 relative">
+                            <div class="absolute inset-0 bg-neon-blue opacity-20 blur-lg rounded-full"></div>
+                            <div class="relative z-10 w-full h-full rounded-full overflow-hidden border-2 border-neon-blue">
+                                <img src="https://placehold.co/96x96" alt="Admin" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-neon-blue">Admin Name</h3>
+                        <p class="text-gray-300 mb-6">Administrator</p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="https://discord.gg/placeholder" target="_blank" class="social-link">
+                                <i class="ri-discord-line text-neon-blue hover:scale-125 transition-transform"></i>
+                            </a>
+                            <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="social-link">
+                                <i class="ri-steam-line text-neon-blue hover:scale-125 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Moderator Card -->
+                <div class="team-card p-8 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-pink rounded-lg text-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-neon-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="w-24 h-24 mx-auto mb-6 relative">
+                            <div class="absolute inset-0 bg-neon-pink opacity-20 blur-lg rounded-full"></div>
+                            <div class="relative z-10 w-full h-full rounded-full overflow-hidden border-2 border-neon-pink">
+                                <img src="https://placehold.co/96x96" alt="Moderator" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-neon-pink">Mod Name</h3>
+                        <p class="text-gray-300 mb-6">Moderator</p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="https://discord.gg/placeholder" target="_blank" class="social-link">
+                                <i class="ri-discord-line text-neon-pink hover:scale-125 transition-transform"></i>
+                            </a>
+                            <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="social-link">
+                                <i class="ri-steam-line text-neon-pink hover:scale-125 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Support Card -->
+                <div class="team-card p-8 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-purple rounded-lg text-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-neon-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="w-24 h-24 mx-auto mb-6 relative">
+                            <div class="absolute inset-0 bg-neon-purple opacity-20 blur-lg rounded-full"></div>
+                            <div class="relative z-10 w-full h-full rounded-full overflow-hidden border-2 border-neon-purple">
+                                <img src="https://placehold.co/96x96" alt="Support" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-neon-purple">Support Name</h3>
+                        <p class="text-gray-300 mb-6">Support Team</p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="https://discord.gg/placeholder" target="_blank" class="social-link">
+                                <i class="ri-discord-line text-neon-purple hover:scale-125 transition-transform"></i>
+                            </a>
+                            <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="social-link">
+                                <i class="ri-steam-line text-neon-purple hover:scale-125 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rules Section -->
+    <section id="rules" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold mb-16 text-center">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple">
+                    Server Rules
+                </span>
+            </h2>
+            
+            <div class="max-w-3xl mx-auto space-y-8">
+                <div class="rules-card p-8 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-blue rounded-lg relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-neon-blue/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 rounded-lg bg-cyber-light border-2 border-neon-blue flex items-center justify-center mr-4">
+                                <i class="ri-shield-check-line text-2xl text-neon-blue"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-neon-blue">General Rules</h3>
+                        </div>
+                        
+                        <ul class="space-y-4">
+                            <li class="flex items-center text-gray-300 group/item">
+                                <i class="ri-checkbox-circle-line text-neon-blue mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                Respect all players and staff members
+                            </li>
+                            <li class="flex items-center text-gray-300 group/item">
+                                <i class="ri-checkbox-circle-line text-neon-blue mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                No cheating or exploiting
+                            </li>
+                            <li class="flex items-center text-gray-300 group/item">
+                                <i class="ri-checkbox-circle-line text-neon-blue mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                No harassment or discrimination
+                            </li>
+                            <li class="flex items-center text-gray-300 group/item">
+                                <i class="ri-checkbox-circle-line text-neon-blue mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                Follow staff instructions
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Section -->
+    <section id="join" class="min-h-screen py-20 relative">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold mb-16 text-center">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple">
+                    Join Our Server
+                </span>
+            </h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <!-- Server IP Card -->
+                <div class="mb-12 p-8 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-blue rounded-lg relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-neon-blue/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="flex items-center justify-center mb-6">
+                            <div class="w-12 h-12 rounded-lg bg-cyber-light border-2 border-neon-blue flex items-center justify-center mr-4">
+                                <i class="ri-server-line text-2xl text-neon-blue"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-neon-blue">Server Address</h3>
+                        </div>
+                        <div class="bg-cyber-light/50 p-4 rounded-lg border border-neon-blue/50 text-center">
+                            <code class="text-xl font-mono text-neon-blue select-all">your-server-ip</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Join Options -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <a href="#" class="block p-8 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-pink rounded-lg relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-neon-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative text-center">
+                            <div class="w-16 h-16 mx-auto mb-6 rounded-lg bg-cyber-light border-2 border-neon-pink flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <i class="ri-discord-line text-2xl text-neon-pink"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 text-neon-pink">Join Discord</h3>
+                            <p class="text-gray-300 mb-4">Connect with our community</p>
+                            <span class="text-neon-pink font-medium inline-flex items-center">
+                                Click to join
+                                <i class="ri-arrow-right-line ml-2 group-hover:translate-x-2 transition-transform"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="block p-8 bg-cyber-light/30 backdrop-blur-lg border-2 border-neon-purple rounded-lg relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-neon-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative text-center">
+                            <div class="w-16 h-16 mx-auto mb-6 rounded-lg bg-cyber-light border-2 border-neon-purple flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <i class="ri-discuss-line text-2xl text-neon-purple"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 text-neon-purple">Visit Forums</h3>
+                            <p class="text-gray-300 mb-4">Discuss and share with others</p>
+                            <span class="text-neon-purple font-medium inline-flex items-center">
+                                Click to browse
+                                <i class="ri-arrow-right-line ml-2 group-hover:translate-x-2 transition-transform"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-cyber-light/30 backdrop-blur-lg border-t border-neon-blue/20">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-400">&copy; 2025 Server Name. All rights reserved.</p>
+            <div class="mt-4 text-sm">
+                <span class="text-gray-500">Template by</span>
+                <a href="https://fourtwenty.dev" target="_blank" rel="noopener" 
+                   class="inline-flex items-center text-neon-blue hover:text-neon-purple transition-colors ml-2 group">
+                    FourTwentyDevs
+                    <i class="ri-external-link-line ml-1 text-gray-400 group-hover:text-neon-purple transition-colors"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

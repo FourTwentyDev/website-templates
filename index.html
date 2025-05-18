@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FourTwenty Templates Hub</title>
+    <!-- Poppins Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #2E3192;
+            --color-secondary: #5D5FEF;
+            --color-accent: #7B68EE;
+            --color-background: rgba(25, 25, 50, 0.95);
+            --color-muted-text: #CCCCFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-background);
+            color: #FFFFFF;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .hero {
+            background: linear-gradient(to bottom right, rgba(46, 49, 146, 0.15), rgba(93, 95, 239, 0.15));
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(46, 49, 146, 0.15) 0%, transparent 70%),
+                radial-gradient(circle at 80% 70%, rgba(93, 95, 239, 0.15) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 4rem;
+            text-align: center;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.25rem;
+            }
+
+            .hero-features {
+                gap: 1rem;
+            }
+
+            .hero-feature {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .template-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(123, 104, 238, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .template-preview {
+            width: 100%;
+            height: 250px;
+            border: none;
+            background: rgba(0, 0, 0, 0.2);
+            transition: all 0.5s ease;
+        }
+
+        .template-card:hover .template-preview {
+            transform: scale(1.02);
+        }
+
+        .template-info {
+            padding: 1.5rem;
+        }
+
+        .template-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #FFFFFF;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            text-align: center;
+            color: var(--color-muted-text);
+            margin: 1.5rem 0 3rem;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .hero h1 {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .hero-subtitle {
+            animation: fadeInUp 0.7s ease-out forwards;
+        }
+
+        .template-card {
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-fill-mode: both;
+        }
+
+        .template-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .template-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .template-card:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .hero-feature {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-feature:nth-child(2) {
+            animation-delay: 1.5s;
+        }
+
+        .hero-feature:nth-child(3) {
+            animation-delay: 3s;
+        }
+
+        .hero-feature:nth-child(4) {
+            animation-delay: 4.5s;
+        }
+
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .hero-feature:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        .hero-feature i {
+            font-size: 1.25rem;
+            color: var(--color-accent);
+        }
+
+        .template-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .template-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            color: var(--color-muted-text);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .template-link:hover {
+            color: var(--color-accent);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        .template-link i {
+            font-size: 1.25rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(25, 25, 50, 0.98);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <h1>FourTwenty Templates</h1>
+            <p class="hero-subtitle">Premium FiveM Server Templates</p>
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <i class="ri-responsive-line"></i>
+                    <span>Fully Responsive</span>
+                </div>
+                <div class="hero-feature">
+                    <i class="ri-code-line"></i>
+                    <span>Clean Code</span>
+                </div>
+                <div class="hero-feature">
+                    <i class="ri-palette-line"></i>
+                    <span>Modern Design</span>
+                </div>
+                <div class="hero-feature">
+                    <i class="ri-speed-line"></i>
+                    <span>Optimized Performance</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="templates-grid">
+            <!-- Template One -->
+            <div class="template-card">
+                <iframe src="one/index.html" class="template-preview" loading="lazy" title="Template One Preview"></iframe>
+                <div class="template-info">
+                    <h2 class="template-title">Dark Gaming Theme</h2>
+                    <p style="color: var(--color-muted-text);">Sleek dark theme with modern gaming aesthetics, custom animations, and interactive elements. Perfect for gaming communities.</p>
+                    <div class="template-links">
+                        <a href="one/index.html" class="template-link" target="_blank">
+                            <i class="ri-external-link-line"></i>
+                            View Template
+                        </a>
+                        <a href="one/README.md" class="template-link" target="_blank">
+                            <i class="ri-file-text-line"></i>
+                            Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template Two -->
+            <div class="template-card">
+                <iframe src="two/index.html" class="template-preview" loading="lazy" title="Template Two Preview"></iframe>
+                <div class="template-info">
+                    <h2 class="template-title">Professional Light Theme</h2>
+                    <p style="color: var(--color-muted-text);">Clean and modern light design with smooth animations, GSAP integration, and a professional layout. Ideal for business-focused servers.</p>
+                    <div class="template-links">
+                        <a href="two/index.html" class="template-link" target="_blank">
+                            <i class="ri-external-link-line"></i>
+                            View Template
+                        </a>
+                        <a href="two/README.md" class="template-link" target="_blank">
+                            <i class="ri-file-text-line"></i>
+                            Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template Three -->
+            <div class="template-card">
+                <iframe src="three/index.html" class="template-preview" loading="lazy" title="Template Three Preview"></iframe>
+                <div class="template-info">
+                    <h2 class="template-title">Hybrid Theme</h2>
+                    <p style="color: var(--color-muted-text);">A perfect blend of gaming and professional aesthetics with customizable color schemes and dynamic content loading.</p>
+                    <div class="template-links">
+                        <a href="three/index.html" class="template-link" target="_blank">
+                            <i class="ri-external-link-line"></i>
+                            View Template
+                        </a>
+                        <a href="three/README.md" class="template-link" target="_blank">
+                            <i class="ri-file-text-line"></i>
+                            Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template Four -->
+            <div class="template-card">
+                <iframe src="four/index.html" class="template-preview" loading="lazy" title="Template Four Preview"></iframe>
+                <div class="template-info">
+                    <h2 class="template-title">Minimalist Theme</h2>
+                    <p style="color: var(--color-muted-text);">Elegant minimalist design focusing on content presentation with subtle animations and intuitive navigation.</p>
+                    <div class="template-links">
+                        <a href="four/index.html" class="template-link" target="_blank">
+                            <i class="ri-external-link-line"></i>
+                            View Template
+                        </a>
+                        <a href="four/README.md" class="template-link" target="_blank">
+                            <i class="ri-file-text-line"></i>
+                            Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template Five -->
+            <div class="template-card">
+                <iframe src="five/index.html" class="template-preview" loading="lazy" title="Template Five Preview"></iframe>
+                <div class="template-info">
+                    <h2 class="template-title">Valorant Theme</h2>
+                    <p style="color: var(--color-muted-text);">Valorant-inspired dark theme with red accents, sharp angles, and bold typography. Features interactive elements and smooth animations.</p>
+                    <div class="template-links">
+                        <a href="five/index.html" class="template-link" target="_blank">
+                            <i class="ri-external-link-line"></i>
+                            View Template
+                        </a>
+                        <a href="five/README.md" class="template-link" target="_blank">
+                            <i class="ri-file-text-line"></i>
+                            Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template Six -->
+            <div class="template-card">
+                <iframe src="six/index.html" class="template-preview" loading="lazy" title="Template Six Preview"></iframe>
+                <div class="template-info">
+                    <h2 class="template-title">Counter-Strike Theme</h2>
+                    <p style="color: var(--color-muted-text);">CS2-inspired dark theme with neon green accents and glowing effects. Features tactical design elements and smooth transitions.</p>
+                    <div class="template-links">
+                        <a href="six/index.html" class="template-link" target="_blank">
+                            <i class="ri-external-link-line"></i>
+                            View Template
+                        </a>
+                        <a href="six/README.md" class="template-link" target="_blank">
+                            <i class="ri-file-text-line"></i>
+                            Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template Seven -->
+            <div class="template-card">
+                <iframe src="seven/index.html" class="template-preview" loading="lazy" title="Template Seven Preview"></iframe>
+                <div class="template-info">
+                    <h2 class="template-title">Rainbow Six Theme</h2>
+                    <p style="color: var(--color-muted-text);">R6S-inspired tactical design with professional dark theme and interactive elements. Perfect for military and tactical roleplay servers.</p>
+                    <div class="template-links">
+                        <a href="seven/index.html" class="template-link" target="_blank">
+                            <i class="ri-external-link-line"></i>
+                            View Template
+                        </a>
+                        <a href="seven/README.md" class="template-link" target="_blank">
+                            <i class="ri-file-text-line"></i>
+                            Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 FourTwenty Development. All rights reserved.</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="https://fourtwenty.dev" target="_blank" rel="noopener">
+                Visit FourTwenty.dev
+                <i class="ri-external-link-line" style="vertical-align: middle;"></i>
+            </a>
+        </p>
+    </footer>
+</body>
+</html>

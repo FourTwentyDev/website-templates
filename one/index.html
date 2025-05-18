@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiveM Server Template</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js via CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Poppins Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-black font-poppins text-white">
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-trail"></div>
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm z-50 border-b border-white/10">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between" x-data="{ mobileMenuOpen: false, activeSection: 'home' }" 
+                 @scroll.window="activeSection = ['home', 'about', 'team', 'rules', 'join'].reduce((active, section) => {
+                    const el = document.getElementById(section);
+                    if (!el) return active;
+                    const rect = el.getBoundingClientRect();
+                    return rect.top <= 100 && rect.bottom >= 100 ? section : active;
+                 }, activeSection)">
+                <div class="text-2xl font-bold relative group">
+                    <span class="relative z-10">Server Name</span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0 blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <template x-for="(section, index) in ['home', 'about', 'team', 'rules', 'join']" :key="index">
+                        <a :href="'#' + section" 
+                           class="relative py-1 group"
+                           :class="{ 'text-white': activeSection === section, 'text-gray-400': activeSection !== section }">
+                            <span x-text="section.charAt(0).toUpperCase() + section.slice(1)" class="group-hover:text-white transition-colors"></span>
+                            <div class="absolute bottom-0 left-0 w-full h-[2px] bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                                 :class="{ '!scale-x-100': activeSection === section }"></div>
+                        </a>
+                    </template>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-white focus:outline-none">
+                    <i x-show="!mobileMenuOpen" class="ri-menu-line text-2xl"></i>
+                    <i x-show="mobileMenuOpen" class="ri-close-line text-2xl"></i>
+                </button>
+
+                <!-- Mobile Menu -->
+                <div x-show="mobileMenuOpen" 
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 -translate-y-4"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     x-transition:leave="transition ease-in duration-150"
+                     x-transition:leave-start="opacity-100 translate-y-0"
+                     x-transition:leave-end="opacity-0 -translate-y-4"
+                     class="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-sm border-b border-white/10 p-4 md:hidden">
+                    <div class="flex flex-col space-y-4">
+                        <template x-for="(section, index) in ['home', 'about', 'team', 'rules', 'join']" :key="index">
+                            <a :href="'#' + section" 
+                               @click="mobileMenuOpen = false"
+                               class="group flex items-center relative py-2 px-3 rounded-lg transition-all duration-300"
+                               :class="{ 'bg-white/5': activeSection === section }">
+                                <i :class="{
+                                    'ri-home-line': section === 'home',
+                                    'ri-information-line': section === 'about',
+                                    'ri-team-line': section === 'team',
+                                    'ri-shield-check-line': section === 'rules',
+                                    'ri-gamepad-line': section === 'join'
+                                }" class="mr-2 text-white/70 group-hover:text-white transition-colors"></i>
+                                <span x-text="section.charAt(0).toUpperCase() + section.slice(1)"
+                                      :class="{ 'text-white': activeSection === section, 'text-gray-400': activeSection !== section }"
+                                      class="group-hover:text-white transition-colors"></span>
+                                <div class="absolute inset-0 bg-white/0 group-hover:bg-white/5 rounded-lg transition-colors -z-10"></div>
+                            </a>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 via-black to-black"></div>
+        <div class="absolute inset-0 bg-grid-white/[0.02]"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="glitch-wrapper mb-6">
+                <h1 class="text-6xl md:text-8xl font-bold glitch-text">Server Name</h1>
+            </div>
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 typing-text">Your Ultimate FiveM Experience</p>
+            <a href="#join" class="relative group bg-white/5 border border-white/10 text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+                <span class="relative z-10">Join Now</span>
+                <div class="absolute inset-0 rounded-lg bg-gradient-to-r from-white/0 via-white/5 to-white/0 blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <i class="ri-arrow-right-line ml-2 transition-transform duration-300 group-hover:translate-x-1"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold mb-12 text-center">About Our Server</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 border border-white/10 rounded-lg hover:border-white/30 transition-all duration-300 hover:transform hover:scale-[1.02] hover:bg-white/[0.02] group">
+                    <div class="flex items-center mb-4">
+                        <i class="ri-gamepad-line text-2xl mr-3 text-white/70 group-hover:text-white transition-colors"></i>
+                        <h3 class="text-2xl font-semibold">Features</h3>
+                    </div>
+                    <p class="text-gray-400">Experience unique gameplay features and custom content.</p>
+                </div>
+                <div class="p-6 border border-white/10 rounded-lg hover:border-white/30 transition-all duration-300 hover:transform hover:scale-[1.02] hover:bg-white/[0.02] group">
+                    <div class="flex items-center mb-4">
+                        <i class="ri-team-line text-2xl mr-3 text-white/70 group-hover:text-white transition-colors"></i>
+                        <h3 class="text-2xl font-semibold">Community</h3>
+                    </div>
+                    <p class="text-gray-400">Join our friendly and active community of players.</p>
+                </div>
+                <div class="p-6 border border-white/10 rounded-lg hover:border-white/30 transition-all duration-300 hover:transform hover:scale-[1.02] hover:bg-white/[0.02] group">
+                    <div class="flex items-center mb-4">
+                        <i class="ri-customer-service-2-line text-2xl mr-3 text-white/70 group-hover:text-white transition-colors"></i>
+                        <h3 class="text-2xl font-semibold">Support</h3>
+                    </div>
+                    <p class="text-gray-400">24/7 support team ready to help you with any issues.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-20 bg-black/50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold mb-12 text-center">Our Team</h2>
+            
+            <!-- Owner Section -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-semibold mb-8 text-center flex items-center justify-center">
+                    <i class="ri-vip-crown-line mr-2"></i> Owner
+                </h3>
+                <div class="team-grid max-w-lg mx-auto">
+                    <div class="p-6 border border-white/10 rounded-lg text-center group hover:border-white/30 transition-all duration-300 hover:transform hover:scale-[1.02] hover:bg-white/[0.02] w-full max-w-sm mx-auto">
+                        <div class="w-24 h-24 rounded-full mx-auto mb-4 relative overflow-hidden">
+                            <img src="https://placehold.co/96x96" alt="Server Owner" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-white/5 via-white/0 to-white/0 group-hover:via-white/5 transition-all duration-500"></div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Server Owner</h3>
+                        <p class="text-gray-400">Founder & Lead Developer</p>
+                        <div class="mt-4 flex justify-center space-x-3">
+                            <a href="https://discord.gg/placeholder" target="_blank" class="hover:scale-110 transition-transform">
+                                <i class="ri-discord-line text-white/50 group-hover:text-white transition-colors"></i>
+                            </a>
+                            <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="hover:scale-110 transition-transform">
+                                <i class="ri-steam-line text-white/50 group-hover:text-white transition-colors"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Administrators Section -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-semibold mb-8 text-center flex items-center justify-center">
+                    <i class="ri-shield-star-line mr-2"></i> Administrators
+                </h3>
+                <div class="team-grid max-w-4xl mx-auto">
+                    <!-- Admin 1 -->
+                    <div class="p-6 border border-white/10 rounded-lg text-center group hover:border-white/30 transition-all duration-300 hover:transform hover:scale-[1.02] hover:bg-white/[0.02] w-full max-w-sm mx-auto">
+                        <div class="w-24 h-24 rounded-full mx-auto mb-4 relative overflow-hidden">
+                            <img src="https://placehold.co/96x96" alt="Admin Name" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-white/5 via-white/0 to-white/0 group-hover:via-white/5 transition-all duration-500"></div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Admin Name</h3>
+                        <p class="text-gray-400">Head Administrator</p>
+                        <div class="mt-4 flex justify-center space-x-3">
+                            <a href="https://discord.gg/placeholder" target="_blank" class="hover:scale-110 transition-transform">
+                                <i class="ri-discord-line text-white/50 group-hover:text-white transition-colors"></i>
+                            </a>
+                            <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="hover:scale-110 transition-transform">
+                                <i class="ri-steam-line text-white/50 group-hover:text-white transition-colors"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Add more admins by copying the above div -->
+                </div>
+            </div>
+
+            <!-- Moderators Section -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-semibold mb-8 text-center flex items-center justify-center">
+                    <i class="ri-shield-check-line mr-2"></i> Moderators
+                </h3>
+                <div class="team-grid max-w-4xl mx-auto">
+                    <!-- Moderator 1 -->
+                    <div class="p-6 border border-white/10 rounded-lg text-center group hover:border-white/30 transition-all duration-300 hover:transform hover:scale-[1.02] hover:bg-white/[0.02] w-full max-w-sm mx-auto">
+                        <div class="w-24 h-24 rounded-full mx-auto mb-4 relative overflow-hidden">
+                            <img src="https://placehold.co/96x96" alt="Mod Name" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-white/5 via-white/0 to-white/0 group-hover:via-white/5 transition-all duration-500"></div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Mod Name</h3>
+                        <p class="text-gray-400">Senior Moderator</p>
+                        <div class="mt-4 flex justify-center space-x-3">
+                            <a href="https://discord.gg/placeholder" target="_blank" class="hover:scale-110 transition-transform">
+                                <i class="ri-discord-line text-white/50 group-hover:text-white transition-colors"></i>
+                            </a>
+                            <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="hover:scale-110 transition-transform">
+                                <i class="ri-steam-line text-white/50 group-hover:text-white transition-colors"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Add more moderators by copying the above div -->
+                </div>
+            </div>
+
+            <!-- Support Team Section -->
+            <div>
+                <h3 class="text-2xl font-semibold mb-8 text-center flex items-center justify-center">
+                    <i class="ri-customer-service-2-line mr-2"></i> Support Team
+                </h3>
+                <div class="team-grid max-w-4xl mx-auto">
+                    <!-- Support Member 1 -->
+                    <div class="p-6 border border-white/10 rounded-lg text-center group hover:border-white/30 transition-all duration-300 hover:transform hover:scale-[1.02] hover:bg-white/[0.02] w-full max-w-sm mx-auto">
+                        <div class="w-24 h-24 rounded-full mx-auto mb-4 relative overflow-hidden">
+                            <img src="https://placehold.co/96x96" alt="Support Name" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-white/5 via-white/0 to-white/0 group-hover:via-white/5 transition-all duration-500"></div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Support Name</h3>
+                        <p class="text-gray-400">Support Specialist</p>
+                        <div class="mt-4 flex justify-center space-x-3">
+                            <a href="https://discord.gg/placeholder" target="_blank" class="hover:scale-110 transition-transform">
+                                <i class="ri-discord-line text-white/50 group-hover:text-white transition-colors"></i>
+                            </a>
+                            <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="hover:scale-110 transition-transform">
+                                <i class="ri-steam-line text-white/50 group-hover:text-white transition-colors"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Add more support members by copying the above div -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rules Section -->
+    <section id="rules" class="py-20 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold mb-12 text-center">Server Rules</h2>
+            <div class="max-w-3xl mx-auto space-y-6">
+                <div class="p-6 border border-white/10 rounded-lg group hover:border-white/30 transition-all duration-300 hover:transform hover:scale-[1.01] hover:bg-white/[0.02]">
+                    <div class="flex items-center mb-4">
+                        <i class="ri-shield-check-line text-2xl mr-3 text-white/70 group-hover:text-white transition-colors"></i>
+                        <h3 class="text-2xl font-semibold">General Rules</h3>
+                    </div>
+                    <ul class="list-none text-gray-400 space-y-3">
+                        <li class="flex items-center">
+                            <i class="ri-checkbox-circle-line mr-2 text-white/30 group-hover:text-white/50 transition-colors"></i>
+                            Respect all players and staff members
+                        </li>
+                        <li class="flex items-center">
+                            <i class="ri-checkbox-circle-line mr-2 text-white/30 group-hover:text-white/50 transition-colors"></i>
+                            No cheating or exploiting
+                        </li>
+                        <li class="flex items-center">
+                            <i class="ri-checkbox-circle-line mr-2 text-white/30 group-hover:text-white/50 transition-colors"></i>
+                            No harassment or discrimination
+                        </li>
+                        <li class="flex items-center">
+                            <i class="ri-checkbox-circle-line mr-2 text-white/30 group-hover:text-white/50 transition-colors"></i>
+                            Follow staff instructions
+                        </li>
+                    </ul>
+                </div>
+                <!-- Add more rule categories here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Section -->
+    <section id="join" class="min-h-screen flex items-center justify-center relative overflow-hidden bg-black">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 via-black to-black opacity-50"></div>
+        <div class="absolute inset-0 bg-grid-white/[0.02]"></div>
+        <div class="absolute inset-0 animate-pulse-slow bg-gradient-to-b from-transparent via-white/[0.02] to-transparent"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h2 class="text-4xl font-bold mb-8 glitch-text">Join Our Server</h2>
+            <div class="max-w-3xl mx-auto">
+                <!-- Server IP Card -->
+                <div class="p-8 border border-white/10 rounded-2xl bg-black/30 backdrop-blur-sm mb-8 transform hover:scale-[1.02] transition-all duration-300 group">
+                    <div class="flex items-center justify-center mb-4">
+                        <i class="ri-server-line text-3xl text-white/70 group-hover:text-white transition-colors mr-3"></i>
+                        <h3 class="text-2xl font-semibold">Server Address</h3>
+                    </div>
+                    <div class="bg-black/50 p-4 rounded-xl border border-white/10 text-center">
+                        <code class="text-xl font-mono text-white/90 select-all">your-server-ip</code>
+                    </div>
+                </div>
+
+                <!-- Join Options -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="#" class="group p-6 border border-white/10 rounded-2xl bg-black/30 backdrop-blur-sm hover:bg-white/5 transition-all duration-300 flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i class="ri-discord-line text-3xl text-white/70 group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Join Discord</h3>
+                        <p class="text-white/70 text-center">Connect with our community</p>
+                        <div class="mt-4 text-sm text-white/50">Click to join →</div>
+                    </a>
+
+                    <a href="#" class="group p-6 border border-white/10 rounded-2xl bg-black/30 backdrop-blur-sm hover:bg-white/5 transition-all duration-300 flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i class="ri-discuss-line text-3xl text-white/70 group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Visit Forums</h3>
+                        <p class="text-white/70 text-center">Discuss and share with others</p>
+                        <div class="mt-4 text-sm text-white/50">Click to browse →</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-black border-t border-white/10">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-400">&copy; 2025 Server Name. All rights reserved.</p>
+            <div class="mt-4 text-sm">
+                <span class="text-gray-600">Template by</span>
+                <a href="https://fourtwenty.dev" target="_blank" rel="noopener" 
+                   class="inline-flex items-center text-gray-400 hover:text-white transition-colors ml-2 group">
+                    FourTwentyDevs
+                    <i class="ri-external-link-line ml-1 text-gray-600 group-hover:text-white transition-colors"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>
