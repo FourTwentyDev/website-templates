@@ -16,7 +16,7 @@ Craving a sophisticated, shadowy vibe for your server? This one's got you covere
 *   **Modern Sheen:** "Glassmorphism" effects for that ultra-modern, translucent look.
 *   **Dynamic Feel:** Snappy text effects and buttery-smooth scrolling.
 *   **Universal Fit:** A responsive grid system that adapts beautifully to any screen.
-*   🔗 [See Dark & Sleek in Action!](./one)
+*   🔗 [See Dark & Sleek in Action!](./basic/one)
 
 ### ☀️ **Template Two: Clean & Modern Light**
 Prefer a brighter, airy aesthetic? This light theme is all about clean lines and classy presentation.
@@ -24,7 +24,7 @@ Prefer a brighter, airy aesthetic? This light theme is all about clean lines and
 *   **3D Pop:** Eye-catching 3D card effects (shoutout to VanillaTilt.js!).
 *   **Silky Animations:** Powered by GSAP for that premium, fluid motion.
 *   **Glassy Accents:** More of that delightful glassmorphism for panels and elements.
-*   🔗 [Take a Peek at Modern Light!](./two)
+*   🔗 [Take a Peek at Modern Light!](./basic/two)
 
 ### 🤖 **Template Three: Cyberpunk Neon**
 Want to teleport your users to a futuristic, neon-drenched metropolis? This theme is pure Blade Runner energy.
@@ -32,7 +32,7 @@ Want to teleport your users to a futuristic, neon-drenched metropolis? This them
 *   **Vibrant Glow:** Bold neon colors and striking gradients that demand attention.
 *   **Circular Command:** A unique and engaging circular navigation system.
 *   **Digital Grid:** Stylish grid patterns and overlays for that cybernetic feel.
-*   🔗 [Experience Cyberpunk Style!](./three)
+*   🔗 [Experience Cyberpunk Style!](./basic/three)
 
 ### 📖 **Template Four: Modern Kindle**
 For those who love minimalist design and perfect readability, this e-reader inspired template is a dream.
@@ -40,7 +40,7 @@ For those who love minimalist design and perfect readability, this e-reader insp
 *   **Subtle Texture:** A gentle, e-reader inspired background effect for a touch of class.
 *   **Fluid Motion:** State-of-the-art animations with Framer Motion & Lenis for smooth scrolling.
 *   **Night Owl Friendly:** Automatic dark mode that kicks in when your system does.
-*   🔗 [Check Out Modern Kindle!](./four)
+*   🔗 [Check Out Modern Kindle!](./basic/four)
 
 ### 🎯 **Template Five: Valorant Inspired**
 Bring the sharp, modern, and competitive edge of Valorant to your server's homepage.
@@ -48,7 +48,7 @@ Bring the sharp, modern, and competitive edge of Valorant to your server's homep
 *   **Signature Reds:** A Valorant-esque color scheme with those iconic red highlights.
 *   **Dynamic Grid:** An interactive background grid with subtle parallax effects.
 *   **Gaming UX:** Custom gaming-style animations and satisfying hover effects.
-*   🔗 [Experience Valorant Style!](./five)
+*   🔗 [Experience Valorant Style!](./basic/five)
 
 ### 💣 **Template Six: Counter-Strike Tactical**
 Capture the modern, tactical essence of CS2 with this sleek and action-packed design.
@@ -56,7 +56,7 @@ Capture the modern, tactical essence of CS2 with this sleek and action-packed de
 *   **Tactical Interface:** Sharp, military-style UI elements for a professional feel.
 *   **Dynamic Engagements:** Glowing hover states and smooth, responsive transitions.
 *   **Gamer-Centric Design:** Custom cards and buttons with a distinct gaming flair.
-*   🔗 [View CS2 Style!](./six)
+*   🔗 [View CS2 Style!](./basic/six)
 
 ### 🛡️ **Template Seven: Rainbow Six Siege Elite**
 Need something tactical, professional, and operator-ready? This R6S-inspired theme means business.
@@ -64,7 +64,31 @@ Need something tactical, professional, and operator-ready? This R6S-inspired the
 *   **Professional Dark Theme:** Sophisticated darks with subtle tactical color accents.
 *   **Interactive Briefing Menu:** Smooth menu transitions with a distinct tactical feel.
 *   **Modern Ops Effects:** Professional hover states and clean border highlights.
-*   🔗 [See R6S Style!](./seven)
+*   🔗 [See R6S Style!](./basic/seven)
+
+### 🎮 **Advanced Template One: Valorant Theme**
+A premium Valorant-themed template with sophisticated gaming aesthetics.
+*   **Tactical Design:** Sharp angles and geometric patterns inspired by Valorant's UI
+*   **Dynamic Elements:** Custom cursor effects and geometric loading animations
+*   **Color Scheme:** Rich blacks with Valorant's signature red accents (#FF4655)
+*   **Gaming Typography:** Professional gaming fonts (Tungsten & DIN 2014)
+*   🔗 [Experience Valorant Style!](./advanced/one)
+
+### 🌐 **Advanced Template Two: Siege Theme**
+A premium Rainbow Six Siege-themed template with military precision.
+*   **Combat Design:** Strategic UI components and tactical layouts
+*   **Military Elements:** Combat-ready borders and overlays
+*   **Color Scheme:** Deep blues and tactical grays with orange accents (#FF6B00)
+*   **Professional Typography:** Military precision with Roboto Condensed
+*   🔗 [See Siege Style!](./advanced/two)
+
+### 🎨 **Advanced Template Three: Linear Theme**
+A premium Linear-inspired template with modern minimalist design.
+*   **Clean Design:** Minimalist elements with refined spacing
+*   **Modern Interface:** Elegant transitions and interactions
+*   **Color Scheme:** Pure blacks with modern accent colors (#5C67DE)
+*   **Professional Typography:** Clean and clear using Inter font
+*   🔗 [View Linear Style!](./advanced/three)
 
 ## 🤩 **And We're Just Getting Started!**
 You betcha! This collection is a living, breathing project. We're constantly brewing up new designs, adding fresh features, and refining what's already here. Keep an eye on this repo – more awesomeness is always on the horizon!

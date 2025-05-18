@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiveM Server Template</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Lenis for smooth scrolling -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <!-- Three.js for 3D effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.158.0/three.min.js"></script>
+    <!-- Roboto Condensed Font (Similar to R6S) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'siege': ['Roboto Condensed', 'sans-serif'],
+                    },
+                    colors: {
+                        siege: {
+                            blue: '#1A1F2B',
+                            orange: '#FF6B00',
+                            gray: '#2A2F3B',
+                            white: '#F5F5F5',
+                            dark: '#0F1319'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-siege-blue text-siege-white font-siege antialiased">
+    <!-- Tactical Cursor -->
+    <div class="tactical-cursor"></div>
+    <div class="tactical-cursor-dot"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen fixed inset-0 bg-siege-dark z-50 flex items-center justify-center">
+        <div class="loading-content text-center">
+            <div class="loading-logo mb-8">
+                <svg class="w-24 h-24 mx-auto" viewBox="0 0 100 100">
+                    <!-- Animated tactical loading icon -->
+                    <polygon class="loading-shape" points="50,10 90,50 50,90 10,50" fill="none" stroke="#FF6B00" stroke-width="2"/>
+                </svg>
+            </div>
+            <div class="loading-bar w-48 h-1 bg-siege-white/20 mx-auto relative overflow-hidden">
+                <div class="loading-progress absolute top-0 left-0 h-full w-full bg-siege-orange transform -translate-x-full"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-40 transition-all duration-300" data-nav>
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex items-center justify-between">
+                <a href="#" class="text-4xl font-siege font-bold tracking-wider uppercase relative group overflow-hidden">
+                    <span class="relative z-10">FIVEM</span>
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-siege-orange transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+                <button class="menu-toggle p-2 hover:bg-siege-orange/10 rounded-none transition-colors tactical-border">
+                    <i class="ri-menu-line text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Tactical Menu Overlay -->
+        <div class="fixed inset-0 bg-siege-dark/95 opacity-0 pointer-events-none transition-opacity duration-300" data-menu-overlay>
+            <div class="container mx-auto px-4 py-20">
+                <div class="space-y-8">
+                    <a href="#home" class="tactical-link block text-7xl font-siege font-bold uppercase hover:text-siege-orange transition-all relative">
+                        <span class="relative z-10">Home</span>
+                        <div class="absolute left-0 top-1/2 w-0 h-0.5 bg-siege-orange transform -translate-y-1/2 transition-all duration-300"></div>
+                    </a>
+                    <a href="#features" class="tactical-link block text-7xl font-siege font-bold uppercase hover:text-siege-orange transition-all relative">
+                        <span class="relative z-10">Features</span>
+                        <div class="absolute left-0 top-1/2 w-0 h-0.5 bg-siege-orange transform -translate-y-1/2 transition-all duration-300"></div>
+                    </a>
+                    <a href="#districts" class="tactical-link block text-7xl font-siege font-bold uppercase hover:text-siege-orange transition-all relative">
+                        <span class="relative z-10">Districts</span>
+                        <div class="absolute left-0 top-1/2 w-0 h-0.5 bg-siege-orange transform -translate-y-1/2 transition-all duration-300"></div>
+                    </a>
+                    <a href="#systems" class="tactical-link block text-7xl font-siege font-bold uppercase hover:text-siege-orange transition-all relative">
+                        <span class="relative z-10">Systems</span>
+                        <div class="absolute left-0 top-1/2 w-0 h-0.5 bg-siege-orange transform -translate-y-1/2 transition-all duration-300"></div>
+                    </a>
+                    <a href="#rules" class="tactical-link block text-7xl font-siege font-bold uppercase hover:text-siege-orange transition-all relative">
+                        <span class="relative z-10">Rules</span>
+                        <div class="absolute left-0 top-1/2 w-0 h-0.5 bg-siege-orange transform -translate-y-1/2 transition-all duration-300"></div>
+                    </a>
+                    <a href="#join" class="tactical-link block text-7xl font-siege font-bold uppercase hover:text-siege-orange transition-all relative">
+                        <span class="relative z-10">Join</span>
+                        <div class="absolute left-0 top-1/2 w-0 h-0.5 bg-siege-orange transform -translate-y-1/2 transition-all duration-300"></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+            <!-- Tactical Grid Background -->
+            <div class="absolute inset-0">
+                <div class="tactical-grid"></div>
+            </div>
+            <!-- Animated Background Shapes -->
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="tactical-shapes"></div>
+            </div>
+            <div class="container mx-auto px-4 py-20 relative">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-8">
+                        <h1 class="text-8xl md:text-9xl font-siege font-bold uppercase mb-6 glitch-text">
+                            Server Name
+                        </h1>
+                        <p class="text-xl md:text-2xl text-siege-white/70 mb-12 font-siege typing-text">
+                            Advanced Roleplay Experience
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <a href="#join" class="tactical-button bg-siege-orange text-siege-dark px-8 py-4 font-siege font-bold uppercase tracking-wider hover:bg-siege-orange/90 transition-colors relative overflow-hidden group">
+                            <span class="relative z-10">Join Server</span>
+                            <div class="absolute inset-0 bg-white/20 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        </a>
+                        <a href="#features" class="tactical-button-outline border-2 border-siege-orange text-siege-orange px-8 py-4 font-siege font-bold uppercase tracking-wider hover:bg-siege-orange hover:text-siege-dark transition-all relative overflow-hidden group">
+                            <span class="relative z-10">View Features</span>
+                            <div class="absolute inset-0 bg-siege-orange transform -translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+                <div class="w-0.5 h-16 bg-siege-orange/20 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-full bg-siege-orange transform -translate-y-full animate-scroll"></div>
+                </div>
+                <span class="mt-4 text-sm uppercase tracking-wider text-siege-white/50">Scroll Down</span>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-20 relative">
+            <div class="absolute inset-0">
+                <div class="tactical-grid opacity-10"></div>
+            </div>
+            <div class="container mx-auto px-4 relative">
+                <h2 class="text-7xl font-siege font-bold uppercase tracking-wide mb-16 text-center tactical-heading">Server Features</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="tactical-card p-8 bg-siege-gray relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-siege-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <i class="ri-police-car-line text-3xl text-siege-orange mb-6"></i>
+                        <h3 class="text-3xl font-siege font-bold uppercase mb-4">Law Enforcement</h3>
+                        <p class="text-siege-white/70">Join the police force and protect the city.</p>
+                    </div>
+                    <div class="tactical-card p-8 bg-siege-gray relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-siege-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <i class="ri-building-2-line text-3xl text-siege-orange mb-6"></i>
+                        <h3 class="text-3xl font-siege font-bold uppercase mb-4">Criminal Empire</h3>
+                        <p class="text-siege-white/70">Build your criminal organization from scratch.</p>
+                    </div>
+                    <div class="tactical-card p-8 bg-siege-gray relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-siege-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <i class="ri-store-2-line text-3xl text-siege-orange mb-6"></i>
+                        <h3 class="text-3xl font-siege font-bold uppercase mb-4">Civilian Life</h3>
+                        <p class="text-siege-white/70">Run businesses and live the civilian dream.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Districts Section -->
+        <section id="districts" class="py-20 relative bg-siege-gray">
+            <div class="container mx-auto px-4">
+                <h2 class="text-7xl font-siege font-bold uppercase tracking-wide mb-16 text-center tactical-heading">City Districts</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- District Cards -->
+                    <div class="feature-card relative group">
+                        <div class="aspect-video overflow-hidden tactical-border">
+                            <img src="https://placehold.co/800x450" alt="Downtown" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-siege-dark via-transparent to-transparent"></div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 p-6 w-full">
+                            <h3 class="text-4xl font-siege font-bold uppercase mb-2 group-hover:text-siege-orange transition-colors">Downtown</h3>
+                            <p class="text-siege-white/70">The bustling heart of the city's business district.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card relative group">
+                        <div class="aspect-video overflow-hidden tactical-border">
+                            <img src="https://placehold.co/800x450" alt="Harbor" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-siege-dark via-transparent to-transparent"></div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 p-6 w-full">
+                            <h3 class="text-4xl font-siege font-bold uppercase mb-2 group-hover:text-siege-orange transition-colors">Harbor</h3>
+                            <p class="text-siege-white/70">Control the city's maritime commerce hub.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card relative group">
+                        <div class="aspect-video overflow-hidden tactical-border">
+                            <img src="https://placehold.co/800x450" alt="Suburbs" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-siege-dark via-transparent to-transparent"></div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 p-6 w-full">
+                            <h3 class="text-4xl font-siege font-bold uppercase mb-2 group-hover:text-siege-orange transition-colors">Suburbs</h3>
+                            <p class="text-siege-white/70">Peaceful residential areas with hidden secrets.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card relative group">
+                        <div class="aspect-video overflow-hidden tactical-border">
+                            <img src="https://placehold.co/800x450" alt="Industrial" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-siege-dark via-transparent to-transparent"></div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 p-6 w-full">
+                            <h3 class="text-4xl font-siege font-bold uppercase mb-2 group-hover:text-siege-orange transition-colors">Industrial</h3>
+                            <p class="text-siege-white/70">The gritty industrial zone full of opportunities.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Systems Section -->
+        <section id="systems" class="py-20 relative">
+            <div class="absolute inset-0">
+                <div class="tactical-grid opacity-10"></div>
+            </div>
+            <div class="container mx-auto px-4 relative">
+                <h2 class="text-7xl font-siege font-bold uppercase tracking-wide mb-16 text-center tactical-heading">Custom Systems</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="tactical-card p-8 bg-siege-gray relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-siege-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <i class="ri-car-line text-3xl text-siege-orange mb-6"></i>
+                        <h3 class="text-3xl font-siege font-bold uppercase mb-4">Vehicle System</h3>
+                        <p class="text-siege-white/70">Custom vehicles with realistic handling and damage.</p>
+                    </div>
+                    <div class="tactical-card p-8 bg-siege-gray relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-siege-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <i class="ri-bank-card-line text-3xl text-siege-orange mb-6"></i>
+                        <h3 class="text-3xl font-siege font-bold uppercase mb-4">Economy System</h3>
+                        <p class="text-siege-white/70">Dynamic economy with multiple income sources.</p>
+                    </div>
+                    <div class="tactical-card p-8 bg-siege-gray relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-siege-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <i class="ri-group-line text-3xl text-siege-orange mb-6"></i>
+                        <h3 class="text-3xl font-siege font-bold uppercase mb-4">Gang System</h3>
+                        <p class="text-siege-white/70">Create and manage your own organizations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rules Section -->
+        <section id="rules" class="py-20 relative bg-siege-gray">
+            <div class="container mx-auto px-4">
+                <h2 class="text-7xl font-siege font-bold uppercase tracking-wide mb-16 text-center tactical-heading">Server Rules</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="tactical-card p-8 bg-siege-dark relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-siege-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="flex items-center mb-6">
+                            <i class="ri-file-list-3-line text-2xl text-siege-orange mr-4"></i>
+                            <h3 class="text-3xl font-siege font-bold uppercase">General Rules</h3>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex items-center text-siege-white/70">
+                                <i class="ri-checkbox-circle-line text-siege-orange mr-3"></i>
+                                Stay in character at all times
+                            </li>
+                            <li class="flex items-center text-siege-white/70">
+                                <i class="ri-checkbox-circle-line text-siege-orange mr-3"></i>
+                                No random death match (RDM)
+                            </li>
+                            <li class="flex items-center text-siege-white/70">
+                                <i class="ri-checkbox-circle-line text-siege-orange mr-3"></i>
+                                Respect other players' roleplay
+                            </li>
+                            <li class="flex items-center text-siege-white/70">
+                                <i class="ri-checkbox-circle-line text-siege-orange mr-3"></i>
+                                Follow server guidelines
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tactical-card p-8 bg-siege-dark relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-siege-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="flex items-center mb-6">
+                            <i class="ri-shield-check-line text-2xl text-siege-orange mr-4"></i>
+                            <h3 class="text-3xl font-siege font-bold uppercase">Roleplay Rules</h3>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex items-center text-siege-white/70">
+                                <i class="ri-checkbox-circle-line text-siege-orange mr-3"></i>
+                                Value your character's life
+                            </li>
+                            <li class="flex items-center text-siege-white/70">
+                                <i class="ri-checkbox-circle-line text-siege-orange mr-3"></i>
+                                No combat logging
+                            </li>
+                            <li class="flex items-center text-siege-white/70">
+                                <i class="ri-checkbox-circle-line text-siege-orange mr-3"></i>
+                                Respect territory rules
+                            </li>
+                            <li class="flex items-center text-siege-white/70">
+                                <i class="ri-checkbox-circle-line text-siege-orange mr-3"></i>
+                                Use appropriate communication
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join Section -->
+        <section id="join" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0">
+                <div class="tactical-grid"></div>
+            </div>
+            <div class="container mx-auto px-4 relative">
+                <h2 class="text-7xl font-siege font-bold uppercase tracking-wide mb-16 text-center tactical-heading">Join The Server</h2>
+                <div class="max-w-4xl mx-auto">
+                    <!-- Server Info -->
+                    <div class="mb-12 p-8 bg-siege-gray tactical-card relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-siege-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-center mb-6">
+                                <i class="ri-server-line text-3xl text-siege-orange mr-4"></i>
+                                <h3 class="text-3xl font-siege font-bold uppercase">Server Status</h3>
+                            </div>
+                            <div class="flex justify-center">
+                                <code class="text-2xl font-mono bg-siege-dark/50 px-6 py-3 rounded-none select-all tactical-border">connect your-server-ip</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Join Options -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <a href="#" class="tactical-card p-8 bg-siege-gray relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-siege-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="relative z-10">
+                                <div class="w-16 h-16 mx-auto mb-6 rounded-none flex items-center justify-center tactical-border">
+                                    <i class="ri-discord-line text-3xl group-hover:text-siege-orange transition-colors"></i>
+                                </div>
+                                <h3 class="text-3xl font-siege font-bold uppercase mb-4 text-center">Join Discord</h3>
+                                <p class="text-siege-white/70 text-center">Join our community</p>
+                            </div>
+                        </a>
+
+                        <a href="#" class="tactical-card p-8 bg-siege-gray relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-siege-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="relative z-10">
+                                <div class="w-16 h-16 mx-auto mb-6 rounded-none flex items-center justify-center tactical-border">
+                                    <i class="ri-team-line text-3xl group-hover:text-siege-orange transition-colors"></i>
+                                </div>
+                                <h3 class="text-3xl font-siege font-bold uppercase mb-4 text-center">Forums</h3>
+                                <p class="text-siege-white/70 text-center">Discuss and share with others</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-siege-orange/10">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-siege-white/70">&copy; 2025 Server Name. All rights reserved.</p>
+            <div class="mt-4 text-sm">
+                <span class="text-siege-white/50">Template by</span>
+                <a href="https://fourtwenty.dev" target="_blank" rel="noopener" 
+                   class="inline-flex items-center text-siege-orange hover:text-siege-white transition-colors ml-2">
+                    FourTwentyDevs
+                    <i class="ri-external-link-line ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

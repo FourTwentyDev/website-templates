@@ -1,0 +1,361 @@
+/* Base styles */
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    cursor: none; /* Hide default cursor */
+}
+
+body {
+    overflow-x: hidden;
+    background-color: #111111;
+    background-image: 
+        linear-gradient(0deg, rgba(17, 17, 17, 0.95), rgba(17, 17, 17, 0.95)),
+        url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none" stroke="%23FF4655" stroke-width="0.5" stroke-opacity="0.1"/></svg>');
+}
+
+/* Custom Cursor */
+.tactical-cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #FF4655;
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: all 0.1s ease;
+    transform: translate(-50%, -50%);
+}
+
+.tactical-cursor-dot {
+    width: 4px;
+    height: 4px;
+    background: #FF4655;
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: all 0.15s ease-out;
+    transform: translate(-50%, -50%);
+}
+
+/* Loading Screen */
+.loading-screen {
+    transition: opacity 0.5s ease-out;
+}
+
+.loading-shape {
+    animation: loadingRotate 2s linear infinite;
+    transform-origin: center;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: loadingDash 2s ease-in-out infinite;
+}
+
+@keyframes loadingRotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loadingDash {
+    0% {
+        stroke-dashoffset: 200;
+    }
+    50% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: -200;
+    }
+}
+
+.loading-progress {
+    animation: loadingProgress 2s ease-in-out infinite;
+}
+
+@keyframes loadingProgress {
+    0% {
+        transform: translateX(-100%);
+    }
+    50% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Tactical Grid Background */
+.tactical-grid {
+    background-image: 
+        linear-gradient(to right, rgba(255, 70, 85, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 70, 85, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    transform: skewY(-12deg);
+    transform-origin: 0;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+}
+
+/* Tactical Shapes */
+.tactical-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.tactical-shapes::before,
+.tactical-shapes::after {
+    content: '';
+    position: absolute;
+    width: 40vmax;
+    height: 40vmax;
+    border: 2px solid rgba(255, 70, 85, 0.1);
+    animation: shapeRotate 20s linear infinite;
+}
+
+.tactical-shapes::before {
+    top: -20vmax;
+    left: -20vmax;
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+    animation-duration: 30s;
+}
+
+.tactical-shapes::after {
+    bottom: -20vmax;
+    right: -20vmax;
+    border-radius: 58% 42% 30% 70% / 55% 55% 45% 45%;
+    animation-duration: 25s;
+}
+
+@keyframes shapeRotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Glitch Text Effect */
+.glitch-text {
+    position: relative;
+    animation: glitchText 3s infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    clip: rect(0, 0, 0, 0);
+}
+
+.glitch-text::before {
+    left: 2px;
+    text-shadow: -1px 0 #FF4655;
+    animation: glitchText-1 3s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+    left: -2px;
+    text-shadow: 1px 0 #FF4655;
+    animation: glitchText-2 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitchText {
+    0% {
+        text-shadow: 0.05em 0 0 #FF4655, -0.05em -0.025em 0 rgba(255, 70, 85, 0.75);
+    }
+    14% {
+        text-shadow: 0.05em 0 0 #FF4655, -0.05em -0.025em 0 rgba(255, 70, 85, 0.75);
+    }
+    15% {
+        text-shadow: -0.05em -0.025em 0 #FF4655, 0.025em 0.025em 0 rgba(255, 70, 85, 0.75);
+    }
+    49% {
+        text-shadow: -0.05em -0.025em 0 #FF4655, 0.025em 0.025em 0 rgba(255, 70, 85, 0.75);
+    }
+    50% {
+        text-shadow: 0.025em 0.05em 0 #FF4655, 0.05em 0 0 rgba(255, 70, 85, 0.75);
+    }
+    99% {
+        text-shadow: 0.025em 0.05em 0 #FF4655, 0.05em 0 0 rgba(255, 70, 85, 0.75);
+    }
+    100% {
+        text-shadow: -0.025em 0 0 #FF4655, -0.025em -0.025em 0 rgba(255, 70, 85, 0.75);
+    }
+}
+
+/* Typing Text Effect */
+.typing-text {
+    border-right: 2px solid #FF4655;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: typing 4s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #FF4655;
+    }
+}
+
+/* Tactical Border */
+.tactical-border {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+    border: 2px solid rgba(255, 70, 85, 0.2);
+    transition: border-color 0.3s ease;
+}
+
+/* Tactical Card */
+.tactical-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+.tactical-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, 
+        rgba(255, 70, 85, 0.1),
+        transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.tactical-card:hover::before {
+    opacity: 1;
+}
+
+/* Tactical Heading */
+.tactical-heading {
+    position: relative;
+    display: inline-block;
+}
+
+.tactical-heading::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        rgba(255, 70, 85, 0) 0%,
+        rgba(255, 70, 85, 0.5) 50%,
+        rgba(255, 70, 85, 0) 100%
+    );
+}
+
+/* Tactical Link */
+.tactical-link {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tactical-link:hover .absolute {
+    width: 30px;
+}
+
+/* Scroll Animation */
+@keyframes scroll {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+.animate-scroll {
+    animation: scroll 2s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+/* Feature Card */
+.feature-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top,
+        rgba(17, 17, 17, 0.9) 0%,
+        rgba(17, 17, 17, 0.7) 25%,
+        transparent 100%
+    );
+    pointer-events: none;
+}
+
+/* Hover Effects */
+.hover\:scale-105:hover {
+    transform: scale(1.05);
+}
+
+.hover\:border-valorant-red:hover {
+    border-color: #FF4655;
+}
+
+/* Print styles */
+@media print {
+    .tactical-cursor,
+    .tactical-cursor-dot {
+        display: none;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #111111;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FF4655;
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #cc3744;
+}

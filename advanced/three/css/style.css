@@ -1,0 +1,101 @@
+/* Base Styles */
+::selection {
+    background-color: rgba(92, 103, 222, 0.1);
+    color: #fff;
+}
+
+/* Loading Screen */
+.loading-screen {
+    animation: fadeOut 0.3s ease-out 1.5s forwards;
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; visibility: hidden; }
+}
+
+.loading-progress {
+    animation: loading 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes loading {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Navigation */
+[data-nav] {
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+[data-nav].scrolled {
+    background: rgba(10, 10, 10, 0.95);
+}
+
+[data-menu-overlay].active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Text Animations */
+.clean-text {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.6s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+.typing-text {
+    opacity: 0;
+    transform: translateY(5px);
+    animation: fadeIn 0.6s cubic-bezier(0.2, 0, 0, 1) 0.2s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Card Styles */
+.clean-card {
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.clean-card:hover {
+    transform: translateY(-1px);
+}
+
+/* Feature Cards */
+.feature-card {
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.feature-card img {
+    transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.feature-card:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Scroll Animations */
+[data-scroll] {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+
+[data-scroll].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .clean-text {
+        font-size: 2rem;
+    }
+}
