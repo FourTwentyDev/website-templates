@@ -1,0 +1,668 @@
+/* ===== VICE CITY RP STYLES ===== */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    /* scroll-behavior: smooth; - Removed to prevent conflict with Lenis */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #050508;
+    color: #E5E5E5;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ===== FALLBACK STYLES FOR ELEMENTS ===== */
+/* Ensure all elements are visible by default, even without JavaScript */
+.vice-card,
+.vice-feature-card,
+.vice-text,
+.typing-text,
+.counter,
+.vice-button-primary,
+.vice-button-outline {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    visibility: visible !important;
+}
+
+/* ===== LOADING SCREEN ===== */
+.loading-screen {
+    backdrop-filter: blur(10px);
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-progress {
+    animation: loading 3s ease-in-out forwards;
+}
+
+@keyframes loading {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(0); }
+}
+
+/* ===== NAVIGATION ===== */
+.vice-glass {
+    background: rgba(26, 26, 31, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 0, 128, 0.2);
+}
+
+.nav-link {
+    color: rgba(229, 229, 229, 0.8);
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: #FF0080;
+}
+
+.vice-button {
+    background: linear-gradient(135deg, #FF0080, #8000FF, #00FFFF);
+    color: #050508;
+    border: none;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.vice-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 0, 128, 0.3);
+}
+
+.vice-button-outline {
+    background: transparent;
+    border: 2px solid rgba(255, 0, 128, 0.5);
+    color: #FF0080;
+    transition: all 0.3s ease;
+}
+
+.vice-button-outline:hover {
+    background: rgba(255, 0, 128, 0.1);
+    border-color: #FF0080;
+}
+
+/* ===== MOBILE MENU ===== */
+.mobile-menu.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* ===== VICE TEXT EFFECTS ===== */
+.vice-text {
+    position: relative;
+    text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+}
+
+.vice-text::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 3s infinite;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* ===== TYPING TEXT EFFECT ===== */
+.typing-text {
+    /* Remove problematic animations that might hide content */
+    /* overflow: hidden;
+    border-right: 2px solid #FF0080;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite; */
+    
+    /* Fallback: just show the text normally */
+    display: block;
+    opacity: 1;
+}
+
+/* Keep animations for when JavaScript is working */
+.typing-text.js-enabled {
+    overflow: hidden;
+    border-right: 2px solid #FF0080;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #FF0080; }
+}
+
+/* ===== VICE CARDS ===== */
+.vice-card {
+    background: rgba(26, 26, 31, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 0, 128, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    /* Ensure cards are always visible */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.vice-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.vice-card:hover::before {
+    left: 100%;
+}
+
+.vice-card:hover {
+    border-color: rgba(255, 0, 128, 0.5);
+    box-shadow: 0 10px 40px rgba(255, 0, 128, 0.2);
+    transform: translateY(-5px);
+}
+
+/* ===== FEATURE CARDS ===== */
+.vice-feature-card {
+    background: rgba(26, 26, 31, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 0, 128, 0.2);
+    transition: all 0.3s ease;
+    /* Ensure feature cards are always visible */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.vice-feature-card:hover {
+    transform: scale(1.02);
+    border-color: rgba(255, 0, 128, 0.5);
+    box-shadow: 0 20px 60px rgba(255, 0, 128, 0.2);
+}
+
+/* ===== SOCIAL LINKS ===== */
+.vice-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(26, 26, 31, 0.3);
+    border: 1px solid rgba(255, 0, 128, 0.3);
+    border-radius: 8px;
+    color: rgba(229, 229, 229, 0.7);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.vice-social-link:hover {
+    background: rgba(255, 0, 128, 0.1);
+    border-color: #FF0080;
+    color: #FF0080;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 0, 128, 0.3);
+}
+
+/* ===== TERMINAL STYLES ===== */
+.vice-terminal {
+    background: rgba(5, 5, 8, 0.8);
+    border: 1px solid rgba(255, 0, 128, 0.3);
+    font-family: 'Orbitron', monospace;
+    position: relative;
+    overflow: hidden;
+}
+
+.vice-terminal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #FF0080, transparent);
+    animation: scan-line 2s linear infinite;
+}
+
+@keyframes scan-line {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* ===== COUNTER ANIMATION ===== */
+.counter {
+    font-variant-numeric: tabular-nums;
+    /* Ensure counters show their target value by default */
+    opacity: 1;
+}
+
+/* ===== BUTTON STYLES ===== */
+.vice-button-primary {
+    background: linear-gradient(135deg, #FF0080, #8000FF, #00FFFF);
+    color: #050508;
+    border: none;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    /* Ensure buttons are always visible */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.vice-button-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(255, 0, 128, 0.4);
+}
+
+.vice-button-outline {
+    background: transparent;
+    border: 2px solid #FF0080;
+    color: #FF0080;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    /* Ensure buttons are always visible */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.vice-button-outline:hover {
+    background: #FF0080;
+    color: #050508;
+    box-shadow: 0 10px 30px rgba(255, 0, 128, 0.3);
+}
+
+/* ===== FLOATING ANIMATIONS ===== */
+@keyframes float {
+    0%, 100% { 
+        transform: translateY(0px);
+    }
+    50% { 
+        transform: translateY(-20px);
+    }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* ===== GLOW EFFECTS ===== */
+@keyframes glow {
+    0% { 
+        box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+    }
+    100% { 
+        box-shadow: 0 0 40px rgba(255, 0, 128, 0.6);
+    }
+}
+
+.animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+/* ===== GRADIENT BACKGROUNDS ===== */
+.bg-vice-gradient {
+    background: linear-gradient(135deg, #FF0080 0%, #8000FF 50%, #00FFFF 100%);
+}
+
+.bg-vice-gradient-alt {
+    background: linear-gradient(45deg, #FF8000 0%, #FFFF00 50%, #FF0080 100%);
+}
+
+.bg-vice-sunset {
+    background: linear-gradient(180deg, #FF8000 0%, #FF0080 50%, #8000FF 100%);
+}
+
+.bg-vice-ocean {
+    background: linear-gradient(180deg, #00FFFF 0%, #0080FF 50%, #8000FF 100%);
+}
+
+/* ===== SCROLL ANIMATIONS ===== */
+@keyframes slideUp {
+    0% { 
+        transform: translateY(100px); 
+        opacity: 0; 
+    }
+    100% { 
+        transform: translateY(0); 
+        opacity: 1; 
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    0% { 
+        opacity: 0; 
+    }
+    100% { 
+        opacity: 1; 
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-out;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    .floating-elements {
+        opacity: 0.5;
+    }
+    
+    .vice-text {
+        font-size: 3rem;
+    }
+    
+    .typing-text {
+        font-size: 1rem;
+    }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .typing-text {
+        animation: none;
+        border-right: none;
+    }
+    
+    .floating-elements {
+        display: none;
+    }
+}
+
+/* ===== CUSTOM SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(26, 26, 31, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #FF0080, #8000FF);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #8000FF, #00FFFF);
+}
+
+/* ===== SELECTION STYLES ===== */
+::selection {
+    background: rgba(255, 0, 128, 0.3);
+    color: #ffffff;
+}
+
+::-moz-selection {
+    background: rgba(255, 0, 128, 0.3);
+    color: #ffffff;
+}
+
+/* ===== FOCUS STYLES ===== */
+*:focus {
+    outline: 2px solid #FF0080;
+    outline-offset: 2px;
+}
+
+/* ===== HOVER EFFECTS ===== */
+.group\/item:hover i {
+    transform: scale(1.1);
+    color: #FF0080;
+}
+
+/* ===== GLASS MORPHISM ===== */
+.backdrop-blur-md {
+    backdrop-filter: blur(12px);
+}
+
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+}
+
+/* ===== GRADIENT TEXT ===== */
+.bg-clip-text {
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===== BORDER GRADIENTS ===== */
+.border-vice-gradient {
+    border-image: linear-gradient(135deg, #FF0080, #8000FF, #00FFFF) 1;
+}
+
+/* ===== SHADOW EFFECTS ===== */
+.shadow-vice {
+    box-shadow: 0 10px 40px rgba(255, 0, 128, 0.2);
+}
+
+.shadow-vice-lg {
+    box-shadow: 0 20px 60px rgba(255, 0, 128, 0.3);
+}
+
+/* ===== ANIMATION DELAYS ===== */
+.delay-100 {
+    animation-delay: 0.1s;
+}
+
+.delay-200 {
+    animation-delay: 0.2s;
+}
+
+.delay-300 {
+    animation-delay: 0.3s;
+}
+
+.delay-500 {
+    animation-delay: 0.5s;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .floating-elements,
+    .vice-terminal::before {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .vice-card,
+    .vice-feature-card {
+        border: 1px solid #ccc !important;
+        background: white !important;
+    }
+    
+    .bg-vice-gradient,
+    .bg-vice-gradient-alt,
+    .bg-vice-sunset,
+    .bg-vice-ocean {
+        background: #f0f0f0 !important;
+    }
+}
+
+/* ===== SPECIAL EFFECTS ===== */
+.neon-glow {
+    text-shadow: 
+        0 0 5px #FF0080,
+        0 0 10px #FF0080,
+        0 0 15px #FF0080,
+        0 0 20px #FF0080;
+}
+
+.neon-border {
+    box-shadow: 
+        0 0 5px #FF0080,
+        0 0 10px #FF0080,
+        0 0 15px #FF0080,
+        inset 0 0 5px #FF0080;
+}
+
+/* ===== LOADING ANIMATIONS ===== */
+@keyframes pulse-vice {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+.animate-pulse-vice {
+    animation: pulse-vice 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ===== GRID PATTERNS ===== */
+.vice-grid {
+    background-image: 
+        linear-gradient(rgba(255, 0, 128, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 0, 128, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+
+/* ===== UTILITY CLASSES ===== */
+.text-vice-gradient {
+    background: linear-gradient(135deg, #FF0080, #8000FF, #00FFFF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.border-vice-pink {
+    border-color: #FF0080;
+}
+
+.border-vice-cyan {
+    border-color: #00FFFF;
+}
+
+.border-vice-purple {
+    border-color: #8000FF;
+}
+
+.border-vice-orange {
+    border-color: #FF8000;
+}
+
+/* ===== INTERACTIVE ELEMENTS ===== */
+.interactive-hover {
+    transition: all 0.3s ease;
+}
+
+.interactive-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 0, 128, 0.2);
+}
+
+/* ===== BRAND COLORS ===== */
+.text-vice-pink { color: #FF0080; }
+.text-vice-purple { color: #8000FF; }
+.text-vice-cyan { color: #00FFFF; }
+.text-vice-orange { color: #FF8000; }
+.text-vice-yellow { color: #FFFF00; }
+.text-vice-blue { color: #0080FF; }
+
+.bg-vice-pink { background-color: #FF0080; }
+.bg-vice-purple { background-color: #8000FF; }
+.bg-vice-cyan { background-color: #00FFFF; }
+.bg-vice-orange { background-color: #FF8000; }
+.bg-vice-yellow { background-color: #FFFF00; }
+.bg-vice-blue { background-color: #0080FF; }
+
+/* ===== FINAL TOUCHES ===== */
+.vice-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.vice-section {
+    padding: 5rem 0;
+}
+
+.vice-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.vice-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+/* ===== JAVASCRIPT ENHANCEMENT CLASSES ===== */
+/* These classes are added by JavaScript for enhanced animations */
+.js-loaded .vice-card,
+.js-loaded .vice-feature-card {
+    /* JavaScript will handle animations for these elements */
+}
+
+/* ===== NO-JS FALLBACKS ===== */
+/* Ensure everything works without JavaScript */
+.no-js .loading-screen {
+    display: none;
+}
+
+.no-js .typing-text {
+    border-right: none;
+    animation: none;
+    overflow: visible;
+    white-space: normal;
+}
+
+.no-js .counter::after {
+    content: attr(data-target);
+}

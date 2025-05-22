@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Name - Premium FiveM Experience</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="logo-lines">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+            <div class="loading-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <span class="progress-text">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span>Server</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#team" class="nav-link">Team</a>
+                <a href="#rules" class="nav-link">Rules</a>
+                <a href="#join" class="nav-link">Join</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i data-lucide="zap"></i>
+                        <span>Premium Experience</span>
+                    </div>
+                    <h1 class="hero-title">
+                        <span class="title-line">The future of</span>
+                        <span class="title-line gradient-text">FiveM gaming</span>
+                    </h1>
+                    <p class="hero-description">
+                        Experience next-generation roleplay with cutting-edge features,
+                        professional staff, and an unmatched community.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary">
+                            <span>Join Server</span>
+                            <i data-lucide="arrow-right"></i>
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i data-lucide="play"></i>
+                            <span>Watch Trailer</span>
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Active Players</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">99.9%</span>
+                            <span class="stat-label">Uptime</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">Support</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-grid">
+                        <div class="grid-item"></div>
+                        <div class="grid-item"></div>
+                        <div class="grid-item"></div>
+                        <div class="grid-item"></div>
+                        <div class="grid-item"></div>
+                        <div class="grid-item"></div>
+                        <div class="grid-item"></div>
+                        <div class="grid-item"></div>
+                        <div class="grid-item"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Built for excellence</h2>
+                    <p class="section-description">
+                        Every feature designed with precision and purpose
+                    </p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="cpu"></i>
+                        </div>
+                        <h3>High Performance</h3>
+                        <p>Optimized infrastructure delivering 99.9% uptime with zero lag</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="shield-check"></i>
+                        </div>
+                        <h3>Advanced Security</h3>
+                        <p>Military-grade protection against cheaters and malicious actors</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <h3>Elite Community</h3>
+                        <p>Curated player base focused on quality roleplay experiences</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="headphones"></i>
+                        </div>
+                        <h3>24/7 Support</h3>
+                        <p>Professional support team available around the clock</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="code"></i>
+                        </div>
+                        <h3>Custom Framework</h3>
+                        <p>Proprietary systems built from the ground up for performance</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="trending-up"></i>
+                        </div>
+                        <h3>Regular Updates</h3>
+                        <p>Continuous improvements and new content every week</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="team" class="team">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Meet the team</h2>
+                    <p class="section-description">
+                        The professionals behind your experience
+                    </p>
+                </div>
+                <div class="team-grid">
+                    <div class="team-card owner">
+                        <div class="member-avatar">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" alt="Server Owner">
+                        </div>
+                        <h3>Alex Johnson</h3>
+                        <p>Founder & Lead Developer</p>
+                        <div class="member-socials">
+                            <a href="#" aria-label="Discord">
+                                <i data-lucide="message-circle"></i>
+                            </a>
+                            <a href="#" aria-label="Steam">
+                                <i data-lucide="gamepad-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="team-card">
+                        <div class="member-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop&crop=face" alt="Admin">
+                        </div>
+                        <h3>Sarah Chen</h3>
+                        <p>Head Administrator</p>
+                        <div class="member-socials">
+                            <a href="#" aria-label="Discord">
+                                <i data-lucide="message-circle"></i>
+                            </a>
+                            <a href="#" aria-label="Steam">
+                                <i data-lucide="gamepad-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="team-card">
+                        <div class="member-avatar">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face" alt="Developer">
+                        </div>
+                        <h3>Mike Rodriguez</h3>
+                        <p>Senior Developer</p>
+                        <div class="member-socials">
+                            <a href="#" aria-label="Discord">
+                                <i data-lucide="message-circle"></i>
+                            </a>
+                            <a href="#" aria-label="Steam">
+                                <i data-lucide="gamepad-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rules Section -->
+        <section id="rules" class="rules">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Server guidelines</h2>
+                    <p class="section-description">
+                        Simple rules for a better experience for everyone
+                    </p>
+                </div>
+                <div class="rules-grid">
+                    <div class="rule-card">
+                        <div class="rule-icon">
+                            <i data-lucide="shield"></i>
+                        </div>
+                        <h3>Respect & Fair Play</h3>
+                        <ul class="rule-list">
+                            <li>Treat all players and staff with respect</li>
+                            <li>No harassment, discrimination, or toxic behavior</li>
+                            <li>Keep conversations appropriate and family-friendly</li>
+                            <li>Use English in public channels</li>
+                        </ul>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">
+                            <i data-lucide="gamepad-2"></i>
+                        </div>
+                        <h3>Gameplay Rules</h3>
+                        <ul class="rule-list">
+                            <li>No cheating, hacking, or exploiting</li>
+                            <li>Stay in character during roleplay</li>
+                            <li>No random killing or griefing</li>
+                            <li>Follow traffic laws and realistic behavior</li>
+                        </ul>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <h3>Community Standards</h3>
+                        <ul class="rule-list">
+                            <li>Follow staff instructions at all times</li>
+                            <li>Report rule violations to staff</li>
+                            <li>No advertising other servers</li>
+                            <li>Keep character names realistic</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join Section -->
+        <section id="join" class="join">
+            <div class="container">
+                <div class="join-content">
+                    <div class="join-text">
+                        <h2>Ready to begin?</h2>
+                        <p>Join thousands of players in the most advanced FiveM experience</p>
+                    </div>
+                    <div class="join-actions">
+                        <div class="server-info">
+                            <div class="server-ip">
+                                <span>connect.server.com</span>
+                                <button class="copy-btn" data-copy="connect.server.com">
+                                    <i data-lucide="copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="join-links">
+                            <a href="#" class="join-link">
+                                <i data-lucide="message-circle"></i>
+                                <span>Discord</span>
+                            </a>
+                            <a href="#" class="join-link">
+                                <i data-lucide="book-open"></i>
+                                <span>Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Server Name. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="https://fourtwenty.dev" target="_blank">Template by FourTwentyDevs</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

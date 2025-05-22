@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiveM Server Template - Holographic Interface</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP for advanced animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Three.js for 3D holographic effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.158.0/three.min.js"></script>
+    <!-- Lenis for ultra-smooth scrolling -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <!-- Inter font for clean typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- JetBrains Mono for code elements -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        holo: {
+                            primary: '#00D4FF',
+                            secondary: '#7C3AED',
+                            accent: '#F59E0B',
+                            success: '#10B981',
+                            warning: '#F59E0B',
+                            error: '#EF4444',
+                            dark: '#0F0F23',
+                            darker: '#0A0A1A',
+                            light: '#1A1A2E',
+                            glass: 'rgba(255, 255, 255, 0.05)',
+                            border: 'rgba(0, 212, 255, 0.2)'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'scan': 'scan 3s linear infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'matrix': 'matrix 20s linear infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        glow: {
+                            '0%': { 'box-shadow': '0 0 20px rgba(0, 212, 255, 0.3)' },
+                            '100%': { 'box-shadow': '0 0 40px rgba(0, 212, 255, 0.6)' }
+                        },
+                        scan: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(100vw)' }
+                        },
+                        shimmer: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(100%)' }
+                        },
+                        matrix: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100vh)' }
+                        }
+                    },
+                    backdropBlur: {
+                        'xs': '2px',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-holo-darker text-white font-inter antialiased overflow-x-hidden">
+    <!-- Holographic Cursor -->
+    <div class="holo-cursor"></div>
+    <div class="holo-cursor-trail"></div>
+
+    <!-- Matrix Rain Background -->
+    <div class="matrix-rain fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Holographic Grid Overlay -->
+    <div class="holo-grid fixed inset-0 pointer-events-none z-10"></div>
+
+    <!-- Scanning Line Effect -->
+    <div class="scan-line fixed top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-holo-primary to-transparent opacity-30 animate-scan z-20"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen fixed inset-0 bg-holo-darker z-50 flex items-center justify-center">
+        <div class="loading-content text-center">
+            <div class="holo-logo mb-8 relative">
+                <div class="w-32 h-32 mx-auto relative">
+                    <div class="absolute inset-0 border-2 border-holo-primary rounded-full animate-spin"></div>
+                    <div class="absolute inset-2 border-2 border-holo-secondary rounded-full animate-spin" style="animation-direction: reverse;"></div>
+                    <div class="absolute inset-4 border-2 border-holo-accent rounded-full animate-spin"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="ri-cpu-line text-4xl text-holo-primary"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="text-2xl font-mono mb-4 text-holo-primary">INITIALIZING HOLOGRAPHIC INTERFACE</div>
+            <div class="loading-bar w-64 h-2 bg-holo-light mx-auto relative overflow-hidden rounded-full">
+                <div class="loading-progress absolute top-0 left-0 h-full bg-gradient-to-r from-holo-primary to-holo-secondary transform -translate-x-full rounded-full"></div>
+            </div>
+            <div class="mt-4 text-sm text-white/50 font-mono">ESTABLISHING NEURAL LINK...</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-40 transition-all duration-500" data-nav>
+        <div class="holo-glass backdrop-blur-md border-b border-holo-border">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <a href="#" class="text-2xl font-bold relative group">
+                        <span class="relative z-10 bg-gradient-to-r from-holo-primary to-holo-secondary bg-clip-text text-transparent">
+                            NEXUS SERVER
+                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-holo-primary/20 to-holo-secondary/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </a>
+                    
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#home" class="nav-link relative group">
+                            <span class="relative z-10">Home</span>
+                            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-holo-primary to-holo-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+                        </a>
+                        <a href="#about" class="nav-link relative group">
+                            <span class="relative z-10">About</span>
+                            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-holo-primary to-holo-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+                        </a>
+                        <a href="#features" class="nav-link relative group">
+                            <span class="relative z-10">Features</span>
+                            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-holo-primary to-holo-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+                        </a>
+                        <a href="#team" class="nav-link relative group">
+                            <span class="relative z-10">Team</span>
+                            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-holo-primary to-holo-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+                        </a>
+                        <a href="#rules" class="nav-link relative group">
+                            <span class="relative z-10">Rules</span>
+                            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-holo-primary to-holo-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+                        </a>
+                        <a href="#join" class="holo-button px-6 py-2 bg-gradient-to-r from-holo-primary to-holo-secondary text-holo-darker font-semibold rounded-lg hover:shadow-lg hover:shadow-holo-primary/25 transition-all">
+                            Connect
+                        </a>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden holo-button-outline p-2 border border-holo-border rounded-lg" data-mobile-toggle>
+                        <i class="ri-menu-line text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu fixed inset-0 bg-holo-darker/95 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300 md:hidden" data-mobile-menu>
+            <div class="container mx-auto px-6 py-20">
+                <div class="space-y-8">
+                    <a href="#home" class="block text-4xl font-bold hover:text-holo-primary transition-colors">Home</a>
+                    <a href="#about" class="block text-4xl font-bold hover:text-holo-primary transition-colors">About</a>
+                    <a href="#features" class="block text-4xl font-bold hover:text-holo-primary transition-colors">Features</a>
+                    <a href="#team" class="block text-4xl font-bold hover:text-holo-primary transition-colors">Team</a>
+                    <a href="#rules" class="block text-4xl font-bold hover:text-holo-primary transition-colors">Rules</a>
+                    <a href="#join" class="block text-4xl font-bold hover:text-holo-primary transition-colors">Connect</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-30">
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+            <!-- 3D Holographic Background -->
+            <div class="holo-3d-bg absolute inset-0"></div>
+            
+            <!-- Floating Particles -->
+            <div class="floating-particles absolute inset-0"></div>
+
+            <div class="container mx-auto px-6 py-20 relative z-10">
+                <div class="max-w-6xl mx-auto text-center">
+                    <!-- Holographic Title -->
+                    <div class="mb-8 relative">
+                        <h1 class="text-6xl md:text-8xl font-black mb-4 relative">
+                            <span class="holo-text bg-gradient-to-r from-holo-primary via-white to-holo-secondary bg-clip-text text-transparent">
+                                NEXUS SERVER
+                            </span>
+                            <div class="absolute inset-0 bg-gradient-to-r from-holo-primary/20 to-holo-secondary/20 blur-2xl"></div>
+                        </h1>
+                        <div class="text-xl md:text-2xl text-white/70 font-mono">
+                            <span class="typing-text">NEXT-GENERATION FIVEM EXPERIENCE</span>
+                        </div>
+                    </div>
+
+                    <!-- Holographic Stats -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                        <div class="holo-card p-6 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="text-3xl font-bold text-holo-primary mb-2 counter" data-target="1337">0</div>
+                                <div class="text-sm text-white/60 font-mono uppercase tracking-wider">Active Players</div>
+                            </div>
+                        </div>
+                        <div class="holo-card p-6 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="text-3xl font-bold text-holo-secondary mb-2 counter" data-target="99">0</div>
+                                <div class="text-sm text-white/60 font-mono uppercase tracking-wider">Custom Scripts</div>
+                            </div>
+                        </div>
+                        <div class="holo-card p-6 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="text-3xl font-bold text-holo-accent mb-2">24/7</div>
+                                <div class="text-sm text-white/60 font-mono uppercase tracking-wider">Uptime</div>
+                            </div>
+                        </div>
+                        <div class="holo-card p-6 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-success/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="text-3xl font-bold text-holo-success mb-2 counter" data-target="128">0</div>
+                                <div class="text-sm text-white/60 font-mono uppercase tracking-wider">Max Slots</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <a href="#join" class="holo-button-primary group relative overflow-hidden px-8 py-4 bg-gradient-to-r from-holo-primary to-holo-secondary text-holo-darker font-bold rounded-xl hover:shadow-2xl hover:shadow-holo-primary/25 transition-all">
+                            <span class="relative z-10 flex items-center">
+                                <i class="ri-rocket-line mr-2"></i>
+                                CONNECT NOW
+                            </span>
+                            <div class="absolute inset-0 bg-white/20 transform translate-y-full group-hover:translate-y-0 transition-transform"></div>
+                        </a>
+                        <a href="#about" class="holo-button-outline group relative overflow-hidden px-8 py-4 border-2 border-holo-primary text-holo-primary font-bold rounded-xl hover:bg-holo-primary hover:text-holo-darker transition-all">
+                            <span class="relative z-10 flex items-center">
+                                <i class="ri-information-line mr-2"></i>
+                                LEARN MORE
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-float">
+                <div class="w-6 h-10 border-2 border-holo-primary rounded-full flex justify-center">
+                    <div class="w-1 h-3 bg-holo-primary rounded-full mt-2 animate-pulse"></div>
+                </div>
+                <span class="mt-2 text-xs text-white/50 font-mono uppercase tracking-wider">Scroll</span>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 relative">
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-5xl md:text-6xl font-black mb-6">
+                            <span class="bg-gradient-to-r from-holo-primary to-holo-secondary bg-clip-text text-transparent">
+                                ABOUT NEXUS
+                            </span>
+                        </h2>
+                        <p class="text-xl text-white/70 max-w-3xl mx-auto">
+                            Experience the future of FiveM gaming with our cutting-edge holographic interface and next-generation gameplay mechanics.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group hover:scale-105 transition-transform">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="w-16 h-16 mb-6 bg-gradient-to-br from-holo-primary to-holo-secondary rounded-xl flex items-center justify-center">
+                                    <i class="ri-cpu-line text-2xl text-white"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-4 text-holo-primary">Advanced AI</h3>
+                                <p class="text-white/70">
+                                    Our server features cutting-edge AI systems that create dynamic, responsive gameplay experiences tailored to each player.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group hover:scale-105 transition-transform">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="w-16 h-16 mb-6 bg-gradient-to-br from-holo-secondary to-holo-accent rounded-xl flex items-center justify-center">
+                                    <i class="ri-global-line text-2xl text-white"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-4 text-holo-secondary">Global Network</h3>
+                                <p class="text-white/70">
+                                    Connect with players worldwide through our advanced networking infrastructure and cross-server communication systems.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group hover:scale-105 transition-transform">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="w-16 h-16 mb-6 bg-gradient-to-br from-holo-accent to-holo-success rounded-xl flex items-center justify-center">
+                                    <i class="ri-shield-check-line text-2xl text-white"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-4 text-holo-accent">Quantum Security</h3>
+                                <p class="text-white/70">
+                                    State-of-the-art security protocols ensure a safe, fair, and cheat-free environment for all players.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-20 relative bg-holo-dark">
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-5xl md:text-6xl font-black mb-6">
+                            <span class="bg-gradient-to-r from-holo-primary to-holo-secondary bg-clip-text text-transparent">
+                                NEURAL FEATURES
+                            </span>
+                        </h2>
+                        <p class="text-xl text-white/70 max-w-3xl mx-auto">
+                            Discover the revolutionary features that make Nexus Server the most advanced FiveM experience available.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Feature 1 -->
+                        <div class="holo-feature-card relative group overflow-hidden rounded-xl">
+                            <div class="aspect-video relative overflow-hidden">
+                                <img src="https://placehold.co/800x450/0F0F23/00D4FF?text=NEURAL+ECONOMY" alt="Neural Economy" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-holo-darker via-transparent to-transparent"></div>
+                                <div class="absolute inset-0 bg-holo-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <h3 class="text-3xl font-bold mb-2 text-holo-primary">Neural Economy</h3>
+                                <p class="text-white/80">AI-driven economic systems that adapt and evolve based on player behavior and market dynamics.</p>
+                            </div>
+                        </div>
+
+                        <!-- Feature 2 -->
+                        <div class="holo-feature-card relative group overflow-hidden rounded-xl">
+                            <div class="aspect-video relative overflow-hidden">
+                                <img src="https://placehold.co/800x450/0F0F23/7C3AED?text=QUANTUM+JOBS" alt="Quantum Jobs" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-holo-darker via-transparent to-transparent"></div>
+                                <div class="absolute inset-0 bg-holo-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <h3 class="text-3xl font-bold mb-2 text-holo-secondary">Quantum Jobs</h3>
+                                <p class="text-white/80">Revolutionary career paths with procedurally generated missions and dynamic skill progression systems.</p>
+                            </div>
+                        </div>
+
+                        <!-- Feature 3 -->
+                        <div class="holo-feature-card relative group overflow-hidden rounded-xl">
+                            <div class="aspect-video relative overflow-hidden">
+                                <img src="https://placehold.co/800x450/0F0F23/F59E0B?text=HOLO+VEHICLES" alt="Holographic Vehicles" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-holo-darker via-transparent to-transparent"></div>
+                                <div class="absolute inset-0 bg-holo-accent/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <h3 class="text-3xl font-bold mb-2 text-holo-accent">Holographic Vehicles</h3>
+                                <p class="text-white/80">Next-gen vehicle customization with holographic modifications and quantum-enhanced performance.</p>
+                            </div>
+                        </div>
+
+                        <!-- Feature 4 -->
+                        <div class="holo-feature-card relative group overflow-hidden rounded-xl">
+                            <div class="aspect-video relative overflow-hidden">
+                                <img src="https://placehold.co/800x450/0F0F23/10B981?text=NEURAL+EVENTS" alt="Neural Events" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-holo-darker via-transparent to-transparent"></div>
+                                <div class="absolute inset-0 bg-holo-success/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <h3 class="text-3xl font-bold mb-2 text-holo-success">Neural Events</h3>
+                                <p class="text-white/80">AI-orchestrated events that create unique, memorable experiences for the entire server community.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="team" class="py-20 relative">
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-5xl md:text-6xl font-black mb-6">
+                            <span class="bg-gradient-to-r from-holo-primary to-holo-secondary bg-clip-text text-transparent">
+                                NEURAL COLLECTIVE
+                            </span>
+                        </h2>
+                        <p class="text-xl text-white/70 max-w-3xl mx-auto">
+                            Meet the visionaries behind Nexus Server - a team of dedicated professionals committed to pushing the boundaries of virtual reality.
+                        </p>
+                    </div>
+
+                    <!-- Owner Section -->
+                    <div class="mb-16">
+                        <h3 class="text-3xl font-bold mb-8 text-center flex items-center justify-center">
+                            <i class="ri-vip-crown-line mr-3 text-holo-accent"></i>
+                            <span class="text-holo-accent">NEURAL ARCHITECT</span>
+                        </h3>
+                        
+                        <div class="max-w-lg mx-auto">
+                            <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group text-center">
+                                <div class="absolute inset-0 bg-gradient-to-br from-holo-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                                <div class="relative z-10">
+                                    <div class="w-32 h-32 mx-auto mb-6 relative">
+                                        <div class="absolute inset-0 bg-gradient-to-br from-holo-accent to-holo-primary rounded-full p-1">
+                                            <div class="w-full h-full rounded-full overflow-hidden">
+                                                <img src="https://placehold.co/128x128/0F0F23/F59E0B?text=NA" alt="Neural Architect" class="w-full h-full object-cover">
+                                            </div>
+                                        </div>
+                                        <div class="absolute inset-0 bg-holo-accent/20 rounded-full blur-xl animate-pulse"></div>
+                                    </div>
+                                    <h3 class="text-2xl font-bold mb-2 text-holo-accent">Neural Architect</h3>
+                                    <p class="text-white/70 mb-6 font-mono">FOUNDER & LEAD DEVELOPER</p>
+                                    <div class="flex justify-center space-x-4">
+                                        <a href="https://discord.gg/placeholder" target="_blank" class="holo-social-link">
+                                            <i class="ri-discord-line text-xl"></i>
+                                        </a>
+                                        <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="holo-social-link">
+                                            <i class="ri-steam-line text-xl"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Staff Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Neural Engineer -->
+                        <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group text-center">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="w-24 h-24 mx-auto mb-6 relative">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-holo-primary to-holo-secondary rounded-full p-1">
+                                        <div class="w-full h-full rounded-full overflow-hidden">
+                                            <img src="https://placehold.co/96x96/0F0F23/00D4FF?text=NE" alt="Neural Engineer" class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                    <div class="absolute inset-0 bg-holo-primary/20 rounded-full blur-lg animate-pulse"></div>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2 text-holo-primary">Neural Engineer</h3>
+                                <p class="text-white/70 mb-6 font-mono text-sm">SYSTEM ADMINISTRATOR</p>
+                                <div class="flex justify-center space-x-4">
+                                    <a href="https://discord.gg/placeholder" target="_blank" class="holo-social-link">
+                                        <i class="ri-discord-line text-lg"></i>
+                                    </a>
+                                    <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="holo-social-link">
+                                        <i class="ri-steam-line text-lg"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quantum Moderator -->
+                        <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group text-center">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="w-24 h-24 mx-auto mb-6 relative">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-holo-secondary to-holo-accent rounded-full p-1">
+                                        <div class="w-full h-full rounded-full overflow-hidden">
+                                            <img src="https://placehold.co/96x96/0F0F23/7C3AED?text=QM" alt="Quantum Moderator" class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                    <div class="absolute inset-0 bg-holo-secondary/20 rounded-full blur-lg animate-pulse"></div>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2 text-holo-secondary">Quantum Moderator</h3>
+                                <p class="text-white/70 mb-6 font-mono text-sm">COMMUNITY GUARDIAN</p>
+                                <div class="flex justify-center space-x-4">
+                                    <a href="https://discord.gg/placeholder" target="_blank" class="holo-social-link">
+                                        <i class="ri-discord-line text-lg"></i>
+                                    </a>
+                                    <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="holo-social-link">
+                                        <i class="ri-steam-line text-lg"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Support Specialist -->
+                        <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group text-center">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-success/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="w-24 h-24 mx-auto mb-6 relative">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-holo-success to-holo-primary rounded-full p-1">
+                                        <div class="w-full h-full rounded-full overflow-hidden">
+                                            <img src="https://placehold.co/96x96/0F0F23/10B981?text=SS" alt="Support Specialist" class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                    <div class="absolute inset-0 bg-holo-success/20 rounded-full blur-lg animate-pulse"></div>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2 text-holo-success">Support Specialist</h3>
+                                <p class="text-white/70 mb-6 font-mono text-sm">NEURAL SUPPORT</p>
+                                <div class="flex justify-center space-x-4">
+                                    <a href="https://discord.gg/placeholder" target="_blank" class="holo-social-link">
+                                        <i class="ri-discord-line text-lg"></i>
+                                    </a>
+                                    <a href="https://steamcommunity.com/id/placeholder" target="_blank" class="holo-social-link">
+                                        <i class="ri-steam-line text-lg"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rules Section -->
+        <section id="rules" class="py-20 relative bg-holo-dark">
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-5xl md:text-6xl font-black mb-6">
+                            <span class="bg-gradient-to-r from-holo-primary to-holo-secondary bg-clip-text text-transparent">
+                                NEURAL PROTOCOLS
+                            </span>
+                        </h2>
+                        <p class="text-xl text-white/70 max-w-3xl mx-auto">
+                            Essential guidelines for maintaining harmony within the Nexus Server neural network.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Core Protocols -->
+                        <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center mb-6">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-holo-primary to-holo-secondary rounded-lg flex items-center justify-center mr-4">
+                                        <i class="ri-shield-check-line text-xl text-white"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-holo-primary">Core Protocols</h3>
+                                </div>
+                                <ul class="space-y-4">
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-primary mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Respect all neural entities and administrators
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-primary mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        No exploitation of system vulnerabilities
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-primary mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Maintain neural link integrity at all times
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-primary mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Follow quantum administrator directives
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Roleplay Matrix -->
+                        <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center mb-6">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-holo-secondary to-holo-accent rounded-lg flex items-center justify-center mr-4">
+                                        <i class="ri-user-voice-line text-xl text-white"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-holo-secondary">Roleplay Matrix</h3>
+                                </div>
+                                <ul class="space-y-4">
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-secondary mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Maintain character consciousness consistency
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-secondary mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        No breaking neural immersion protocols
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-secondary mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Respect other entities' narrative threads
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-secondary mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        No quantum manipulation or meta-gaming
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Security Protocols -->
+                        <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center mb-6">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-holo-accent to-holo-success rounded-lg flex items-center justify-center mr-4">
+                                        <i class="ri-lock-line text-xl text-white"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-holo-accent">Security Protocols</h3>
+                                </div>
+                                <ul class="space-y-4">
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-accent mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        No unauthorized neural access attempts
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-accent mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Report system anomalies immediately
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-accent mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Maintain data integrity standards
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-accent mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Follow quantum encryption guidelines
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Community Matrix -->
+                        <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-success/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center mb-6">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-holo-success to-holo-primary rounded-lg flex items-center justify-center mr-4">
+                                        <i class="ri-team-line text-xl text-white"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-holo-success">Community Matrix</h3>
+                                </div>
+                                <ul class="space-y-4">
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-success mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Foster positive neural connections
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-success mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Support new neural entities
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-success mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Contribute to collective knowledge
+                                    </li>
+                                    <li class="flex items-center text-white/80 group/item">
+                                        <i class="ri-checkbox-circle-line text-holo-success mr-3 group-hover/item:scale-110 transition-transform"></i>
+                                        Maintain neural network harmony
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join Section -->
+        <section id="join" class="min-h-screen py-20 relative overflow-hidden">
+            <!-- Holographic Background Effects -->
+            <div class="holo-3d-bg absolute inset-0"></div>
+            <div class="floating-particles absolute inset-0"></div>
+
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-5xl md:text-6xl font-black mb-6">
+                            <span class="bg-gradient-to-r from-holo-primary to-holo-secondary bg-clip-text text-transparent">
+                                NEURAL CONNECTION
+                            </span>
+                        </h2>
+                        <p class="text-xl text-white/70 max-w-3xl mx-auto">
+                            Initialize your neural link and join the most advanced FiveM experience in the quantum realm.
+                        </p>
+                    </div>
+
+                    <!-- Server Connection Panel -->
+                    <div class="mb-12">
+                        <div class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group max-w-4xl mx-auto">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center justify-center mb-6">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-holo-primary to-holo-secondary rounded-xl flex items-center justify-center mr-4">
+                                        <i class="ri-server-line text-2xl text-white"></i>
+                                    </div>
+                                    <h3 class="text-3xl font-bold text-holo-primary">NEURAL SERVER ADDRESS</h3>
+                                </div>
+                                <div class="flex justify-center">
+                                    <div class="holo-terminal p-6 bg-holo-darker/80 border border-holo-primary/30 rounded-lg font-mono text-center relative group">
+                                        <div class="absolute inset-0 bg-holo-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                                        <div class="relative z-10">
+                                            <div class="text-sm text-holo-primary/70 mb-2">CONNECT TO:</div>
+                                            <code class="text-2xl text-holo-primary select-all">nexus.server.ip</code>
+                                            <div class="text-sm text-white/50 mt-2">QUANTUM ENCRYPTION ENABLED</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Connection Options -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Discord Neural Link -->
+                        <a href="https://discord.gg/placeholder" target="_blank" class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group hover:scale-105 transition-all">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10 text-center">
+                                <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-holo-primary to-holo-secondary rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="ri-discord-line text-3xl text-white"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-4 text-holo-primary">Discord Neural Link</h3>
+                                <p class="text-white/70 mb-6">Connect to our quantum communication network</p>
+                                <div class="text-holo-primary font-mono text-sm flex items-center justify-center">
+                                    ESTABLISH LINK
+                                    <i class="ri-arrow-right-line ml-2 group-hover:translate-x-2 transition-transform"></i>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Forum Matrix -->
+                        <a href="#" class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group hover:scale-105 transition-all">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10 text-center">
+                                <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-holo-secondary to-holo-accent rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="ri-discuss-line text-3xl text-white"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-4 text-holo-secondary">Forum Matrix</h3>
+                                <p class="text-white/70 mb-6">Access the collective knowledge database</p>
+                                <div class="text-holo-secondary font-mono text-sm flex items-center justify-center">
+                                    ACCESS MATRIX
+                                    <i class="ri-arrow-right-line ml-2 group-hover:translate-x-2 transition-transform"></i>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Support Portal -->
+                        <a href="#" class="holo-card p-8 bg-holo-glass backdrop-blur-md border border-holo-border rounded-xl relative group hover:scale-105 transition-all">
+                            <div class="absolute inset-0 bg-gradient-to-br from-holo-success/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                            <div class="relative z-10 text-center">
+                                <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-holo-success to-holo-primary rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="ri-customer-service-2-line text-3xl text-white"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-4 text-holo-success">Support Portal</h3>
+                                <p class="text-white/70 mb-6">Neural assistance and troubleshooting</p>
+                                <div class="text-holo-success font-mono text-sm flex items-center justify-center">
+                                    OPEN PORTAL
+                                    <i class="ri-arrow-right-line ml-2 group-hover:translate-x-2 transition-transform"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Neural Status -->
+                    <div class="mt-16 text-center">
+                        <div class="inline-flex items-center space-x-4 px-6 py-3 bg-holo-glass backdrop-blur-md border border-holo-border rounded-full">
+                            <div class="w-3 h-3 bg-holo-success rounded-full animate-pulse"></div>
+                            <span class="text-white/80 font-mono">NEURAL NETWORK STATUS: ONLINE</span>
+                            <div class="w-3 h-3 bg-holo-success rounded-full animate-pulse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-holo-darker border-t border-holo-border relative">
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <p class="text-white/60 mb-4">&copy; 2025 Nexus Server. All neural rights reserved.</p>
+            <div class="text-sm">
+                <span class="text-white/40 font-mono">TEMPLATE ARCHITECTED BY</span>
+                <a href="https://fourtwenty.dev" target="_blank" rel="noopener" 
+                   class="inline-flex items-center text-holo-primary hover:text-holo-secondary transition-colors ml-2 group">
+                    FourTwentyDevs
+                    <i class="ri-external-link-line ml-1 text-white/40 group-hover:text-holo-secondary transition-colors"></i>
+                </a>
+            </div>
+            <div class="mt-4 text-xs text-white/30 font-mono">
+                NEURAL INTERFACE v4.0 | QUANTUM ENCRYPTION ENABLED
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

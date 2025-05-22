@@ -90,6 +90,33 @@ A premium Linear-inspired template with modern minimalist design.
 *   **Professional Typography:** Clean and clear using Inter font
 *   🔗 [View Linear Style!](./advanced/three)
 
+### 🌌 **Advanced Template Four: Nexus Holographic Interface**
+The ultimate next-generation FiveM template with cutting-edge holographic technology.
+*   **3D Neural Network:** Interactive Three.js powered particle systems and neural visualizations
+*   **Holographic Effects:** Matrix rain, scanning lines, and advanced glassmorphism design
+*   **Advanced Animations:** GSAP-powered smooth scrolling with Lenis and custom cursor effects
+*   **Color Scheme:** Holographic cyan (#00D4FF) with neural purple (#7C3AED) and quantum amber (#F59E0B)
+*   **Modern Typography:** Inter and JetBrains Mono for a futuristic, technical aesthetic
+*   🔗 [Experience the Future!](./advanced/four)
+
+### 🌴 **Advanced Template Five: Vice City RP**
+A premium Miami Vice and GTA-inspired template for immersive roleplay servers.
+*   **Miami Vice Aesthetics:** Neon pink (#FF0080), cyan (#00FFFF), and purple (#8000FF) gradients
+*   **Criminal Syndicate Theme:** Professional dark theme with tactical design elements
+*   **Interactive Elements:** Dynamic counters, typing effects, and parallax scrolling
+*   **Gaming Typography:** Clean modern fonts (Inter) with futuristic accents (Orbitron)
+*   **Immersive Features:** Custom loading screen and easter eggs for enhanced engagement
+*   🔗 [Enter Vice City!](./advanced/five)
+
+### 🎨 **Advanced Template Six: Miami Modern**
+An ultra-modern template combining Miami Vice aesthetics with Apple-style minimalism.
+*   **Clean Design:** Ultra-minimalist layout with perfect spacing and typography
+*   **Interactive Experience:** Magnetic button interactions and progressive reveals
+*   **Color Scheme:** Miami pastels with pink (#ec4899), teal (#14b8a6), and yellow (#eab308) accents
+*   **Modern Effects:** Dramatic loading animations and glassmorphism effects
+*   **Professional Polish:** Apple-inspired presentation with game-like micro-interactions
+*   🔗 [Experience Modern Miami!](./advanced/six)
+
 ## 🤩 **And We're Just Getting Started!**
 You betcha! This collection is a living, breathing project. We're constantly brewing up new designs, adding fresh features, and refining what's already here. Keep an eye on this repo – more awesomeness is always on the horizon!
 
