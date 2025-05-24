@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoPixel Inspired - Professional FiveM Server</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'np': {
+                            'blue': '#1e3a8a',
+                            'light-blue': '#3b82f6',
+                            'gold': '#fbbf24',
+                            'dark': '#0f172a',
+                            'gray': '#334155',
+                            'light-gray': '#64748b'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white font-inter text-gray-900 overflow-x-hidden">
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-200 shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between" x-data="{ mobileMenuOpen: false, activeSection: 'home' }" 
+                 @scroll.window="activeSection = ['home', 'about', 'departments', 'staff', 'guidelines', 'apply'].reduce((active, section) => {
+                    const el = document.getElementById(section);
+                    if (!el) return active;
+                    const rect = el.getBoundingClientRect();
+                    return rect.top <= 100 && rect.bottom >= 100 ? section : active;
+                 }, activeSection)">
+                
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-np-blue to-np-light-blue rounded-lg flex items-center justify-center">
+                        <i class="ri-shield-star-line text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-xl font-bold text-np-dark">Los Santos PD</div>
+                        <div class="text-xs text-np-gray">Professional Roleplay</div>
+                    </div>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <template x-for="(item, index) in [
+                        {id: 'home', label: 'Home', icon: 'ri-home-line'},
+                        {id: 'about', label: 'About', icon: 'ri-information-line'},
+                        {id: 'departments', label: 'Departments', icon: 'ri-building-line'},
+                        {id: 'staff', label: 'Staff', icon: 'ri-team-line'},
+                        {id: 'guidelines', label: 'Guidelines', icon: 'ri-file-list-line'},
+                        {id: 'apply', label: 'Apply', icon: 'ri-user-add-line'}
+                    ]" :key="index">
+                        <a :href="'#' + item.id" 
+                           class="relative py-2 px-3 rounded-lg transition-all duration-300 group"
+                           :class="{ 
+                               'bg-np-blue text-white': activeSection === item.id, 
+                               'text-np-gray hover:text-np-blue hover:bg-gray-50': activeSection !== item.id 
+                           }">
+                            <div class="flex items-center space-x-2">
+                                <i :class="item.icon" class="text-sm"></i>
+                                <span class="font-medium" x-text="item.label"></span>
+                            </div>
+                        </a>
+                    </template>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i x-show="!mobileMenuOpen" class="ri-menu-line text-xl text-np-gray"></i>
+                    <i x-show="mobileMenuOpen" class="ri-close-line text-xl text-np-gray"></i>
+                </button>
+
+                <!-- Mobile Menu -->
+                <div x-show="mobileMenuOpen" 
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 -translate-y-4"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     x-transition:leave="transition ease-in duration-150"
+                     x-transition:leave-start="opacity-100 translate-y-0"
+                     x-transition:leave-end="opacity-0 -translate-y-4"
+                     class="absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg lg:hidden">
+                    <div class="p-4 space-y-2">
+                        <template x-for="(item, index) in [
+                            {id: 'home', label: 'Home', icon: 'ri-home-line'},
+                            {id: 'about', label: 'About', icon: 'ri-information-line'},
+                            {id: 'departments', label: 'Departments', icon: 'ri-building-line'},
+                            {id: 'staff', label: 'Staff', icon: 'ri-team-line'},
+                            {id: 'guidelines', label: 'Guidelines', icon: 'ri-file-list-line'},
+                            {id: 'apply', label: 'Apply', icon: 'ri-user-add-line'}
+                        ]" :key="index">
+                            <a :href="'#' + item.id" 
+                               @click="mobileMenuOpen = false"
+                               class="flex items-center space-x-3 p-3 rounded-lg transition-colors"
+                               :class="{ 
+                                   'bg-np-blue text-white': activeSection === item.id, 
+                                   'text-np-gray hover:bg-gray-50': activeSection !== item.id 
+                               }">
+                                <i :class="item.icon" class="text-lg"></i>
+                                <span class="font-medium" x-text="item.label"></span>
+                            </a>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-gray-50 to-white">
+        <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <div class="max-w-4xl mx-auto">
+                <!-- Badge -->
+                <div class="inline-flex items-center space-x-2 bg-np-blue/10 text-np-blue px-4 py-2 rounded-full text-sm font-medium mb-8">
+                    <i class="ri-shield-check-line"></i>
+                    <span>Professional Roleplay Server</span>
+                </div>
+                
+                <!-- Main Title -->
+                <h1 class="text-5xl md:text-7xl font-bold text-np-dark mb-6 leading-tight">
+                    Los Santos
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-np-blue to-np-light-blue">
+                        Police Department
+                    </span>
+                </h1>
+                
+                <!-- Subtitle -->
+                <p class="text-xl md:text-2xl text-np-gray mb-12 max-w-3xl mx-auto leading-relaxed">
+                    Experience the most realistic and professional law enforcement roleplay in Los Santos. 
+                    Join our elite team of officers and make a difference.
+                </p>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                    <a href="#apply" class="group bg-np-blue hover:bg-np-blue/90 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl">
+                        <i class="ri-user-add-line"></i>
+                        <span>Apply Now</span>
+                        <i class="ri-arrow-right-line group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#about" class="group border-2 border-np-blue text-np-blue hover:bg-np-blue hover:text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center space-x-2">
+                        <i class="ri-play-circle-line"></i>
+                        <span>Learn More</span>
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 max-w-3xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-np-blue counter" data-target="500">0</div>
+                        <div class="text-sm text-np-gray font-medium">Active Officers</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-np-blue counter" data-target="24">0</div>
+                        <div class="text-sm text-np-gray font-medium">Hours Coverage</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-np-blue counter" data-target="15">0</div>
+                        <div class="text-sm text-np-gray font-medium">Departments</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-np-blue counter" data-target="99">0</div>
+                        <div class="text-sm text-np-gray font-medium">Uptime %</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-np-dark mb-4">About Our Department</h2>
+                <p class="text-xl text-np-gray max-w-3xl mx-auto">
+                    We pride ourselves on maintaining the highest standards of professionalism and realism in law enforcement roleplay.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                <!-- Feature Cards -->
+                <div class="group p-8 bg-gray-50 rounded-2xl hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-np-blue to-np-light-blue rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ri-shield-star-line text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-np-dark mb-4">Professional Training</h3>
+                    <p class="text-np-gray leading-relaxed">
+                        Comprehensive academy training program with realistic scenarios and professional development opportunities.
+                    </p>
+                </div>
+                
+                <div class="group p-8 bg-gray-50 rounded-2xl hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-np-blue to-np-light-blue rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ri-team-line text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-np-dark mb-4">Elite Community</h3>
+                    <p class="text-np-gray leading-relaxed">
+                        Join a community of dedicated roleplayers committed to creating authentic law enforcement experiences.
+                    </p>
+                </div>
+                
+                <div class="group p-8 bg-gray-50 rounded-2xl hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-np-blue to-np-light-blue rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ri-settings-3-line text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-np-dark mb-4">Advanced Systems</h3>
+                    <p class="text-np-gray leading-relaxed">
+                        State-of-the-art MDT systems, realistic dispatch, and advanced police equipment for immersive gameplay.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Departments Section -->
+    <section id="departments" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-np-dark mb-4">Our Departments</h2>
+                <p class="text-xl text-np-gray max-w-3xl mx-auto">
+                    Specialized units working together to maintain law and order in Los Santos.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Department Cards -->
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-np-blue/10 rounded-lg flex items-center justify-center">
+                            <i class="ri-car-line text-np-blue text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-np-dark">Patrol Division</h3>
+                            <p class="text-sm text-np-gray">Street-level enforcement</p>
+                        </div>
+                    </div>
+                    <p class="text-np-gray text-sm">
+                        First responders handling daily patrol duties, traffic enforcement, and community policing initiatives.
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-np-blue/10 rounded-lg flex items-center justify-center">
+                            <i class="ri-search-line text-np-blue text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-np-dark">Investigations</h3>
+                            <p class="text-sm text-np-gray">Detective work</p>
+                        </div>
+                    </div>
+                    <p class="text-np-gray text-sm">
+                        Specialized detectives handling complex cases, forensics, and long-term investigations.
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-np-blue/10 rounded-lg flex items-center justify-center">
+                            <i class="ri-shield-line text-np-blue text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-np-dark">SWAT</h3>
+                            <p class="text-sm text-np-gray">Tactical response</p>
+                        </div>
+                    </div>
+                    <p class="text-np-gray text-sm">
+                        Elite tactical unit for high-risk operations, hostage situations, and armed responses.
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-np-blue/10 rounded-lg flex items-center justify-center">
+                            <i class="ri-plane-line text-np-blue text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-np-dark">Air Support</h3>
+                            <p class="text-sm text-np-gray">Aerial operations</p>
+                        </div>
+                    </div>
+                    <p class="text-np-gray text-sm">
+                        Helicopter and drone operations for surveillance, pursuit, and emergency response.
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-np-blue/10 rounded-lg flex items-center justify-center">
+                            <i class="ri-road-map-line text-np-blue text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-np-dark">Traffic Division</h3>
+                            <p class="text-sm text-np-gray">Road safety</p>
+                        </div>
+                    </div>
+                    <p class="text-np-gray text-sm">
+                        Specialized traffic enforcement, accident investigation, and highway patrol operations.
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-np-blue/10 rounded-lg flex items-center justify-center">
+                            <i class="ri-graduation-cap-line text-np-blue text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-np-dark">Training Division</h3>
+                            <p class="text-sm text-np-gray">Officer development</p>
+                        </div>
+                    </div>
+                    <p class="text-np-gray text-sm">
+                        Academy training, field training officer program, and ongoing professional development.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Staff Section -->
+    <section id="staff" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-np-dark mb-4">Command Staff</h2>
+                <p class="text-xl text-np-gray max-w-3xl mx-auto">
+                    Meet the leadership team dedicated to maintaining excellence in our department.
+                </p>
+            </div>
+            
+            <!-- Chief of Police -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold text-np-dark mb-8 text-center flex items-center justify-center">
+                    <i class="ri-vip-crown-line mr-2 text-np-gold"></i> Chief of Police
+                </h3>
+                <div class="max-w-md mx-auto">
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 text-center group hover:shadow-xl transition-all duration-300">
+                        <div class="w-24 h-24 rounded-full mx-auto mb-6 relative overflow-hidden bg-gradient-to-br from-np-blue to-np-light-blue">
+                            <img src="https://placehold.co/96x96" alt="Chief" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-xl font-bold text-np-dark mb-2">Chief Johnson</h4>
+                        <p class="text-np-gray mb-4">Chief of Police</p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="w-10 h-10 bg-gray-100 hover:bg-np-blue hover:text-white rounded-lg flex items-center justify-center transition-colors">
+                                <i class="ri-discord-line"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-gray-100 hover:bg-np-blue hover:text-white rounded-lg flex items-center justify-center transition-colors">
+                                <i class="ri-steam-line"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Deputy Chiefs -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold text-np-dark mb-8 text-center flex items-center justify-center">
+                    <i class="ri-shield-star-line mr-2 text-np-blue"></i> Deputy Chiefs
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 text-center group hover:shadow-xl transition-all duration-300">
+                        <div class="w-20 h-20 rounded-full mx-auto mb-4 relative overflow-hidden bg-gradient-to-br from-np-blue to-np-light-blue">
+                            <img src="https://placehold.co/80x80" alt="Deputy Chief" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-lg font-bold text-np-dark mb-1">Deputy Smith</h4>
+                        <p class="text-np-gray text-sm mb-3">Deputy Chief - Operations</p>
+                        <div class="flex justify-center space-x-2">
+                            <a href="#" class="w-8 h-8 bg-gray-100 hover:bg-np-blue hover:text-white rounded-lg flex items-center justify-center transition-colors text-sm">
+                                <i class="ri-discord-line"></i>
+                            </a>
+                            <a href="#" class="w-8 h-8 bg-gray-100 hover:bg-np-blue hover:text-white rounded-lg flex items-center justify-center transition-colors text-sm">
+                                <i class="ri-steam-line"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Add more deputy chiefs as needed -->
+                </div>
+            </div>
+            
+            <!-- Captains -->
+            <div>
+                <h3 class="text-2xl font-bold text-np-dark mb-8 text-center flex items-center justify-center">
+                    <i class="ri-shield-check-line mr-2 text-np-light-blue"></i> Captains
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center group hover:shadow-lg transition-all duration-300">
+                        <div class="w-16 h-16 rounded-full mx-auto mb-3 relative overflow-hidden bg-gradient-to-br from-np-blue to-np-light-blue">
+                            <img src="https://placehold.co/64x64" alt="Captain" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-md font-bold text-np-dark mb-1">Capt. Davis</h4>
+                        <p class="text-np-gray text-xs mb-2">Patrol Division</p>
+                        <div class="flex justify-center space-x-1">
+                            <a href="#" class="w-6 h-6 bg-gray-100 hover:bg-np-blue hover:text-white rounded flex items-center justify-center transition-colors text-xs">
+                                <i class="ri-discord-line"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Add more captains as needed -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guidelines Section -->
+    <section id="guidelines" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-np-dark mb-4">Department Guidelines</h2>
+                <p class="text-xl text-np-gray max-w-3xl mx-auto">
+                    Professional standards and protocols that ensure excellence in our operations.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto space-y-8">
+                <!-- Guideline Categories -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-np-blue/10 rounded-lg flex items-center justify-center mr-4">
+                            <i class="ri-shield-check-line text-np-blue text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-np-dark">Professional Conduct</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Maintain professional demeanor at all times</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Follow chain of command protocols</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Respect all community members</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Adhere to department policies</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-np-blue/10 rounded-lg flex items-center justify-center mr-4">
+                            <i class="ri-book-open-line text-np-blue text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-np-dark">Training Requirements</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Complete academy training program</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Pass field training evaluation</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Attend mandatory training sessions</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Maintain continuing education requirements</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-np-blue/10 rounded-lg flex items-center justify-center mr-4">
+                            <i class="ri-user-settings-line text-np-blue text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-np-dark">Operational Standards</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Use proper radio protocols</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Complete accurate reports</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Follow pursuit policies</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="ri-checkbox-circle-line text-np-blue mt-1"></i>
+                            <span class="text-np-gray">Maintain equipment standards</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Apply Section -->
+    <section id="apply" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="mb-16">
+                    <h2 class="text-4xl font-bold text-np-dark mb-4">Join Our Force</h2>
+                    <p class="text-xl text-np-gray max-w-3xl mx-auto">
+                        Ready to serve and protect? Take the first step towards becoming a Los Santos Police Officer.
+                    </p>
+                </div>
+                
+                <!-- Application Process -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-np-blue to-np-light-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-white font-bold text-xl">1</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-np-dark mb-2">Application</h3>
+                        <p class="text-np-gray">Submit your detailed application through our Discord server.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-np-blue to-np-light-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-white font-bold text-xl">2</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-np-dark mb-2">Interview</h3>
+                        <p class="text-np-gray">Participate in a comprehensive interview with our recruitment team.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-np-blue to-np-light-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-white font-bold text-xl">3</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-np-dark mb-2">Academy</h3>
+                        <p class="text-np-gray">Complete our intensive police academy training program.</p>
+                    </div>
+                </div>
+                
+                <!-- Server Information -->
+                <div class="bg-gray-50 p-8 rounded-2xl mb-8">
+                    <h3 class="text-2xl font-bold text-np-dark mb-6">Server Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="text-center">
+                            <div class="bg-white p-6 rounded-xl border border-gray-200">
+                                <i class="ri-server-line text-3xl text-np-blue mb-3"></i>
+                                <h4 class="text-lg font-bold text-np-dark mb-2">Server IP</h4>
+                                <code class="text-np-blue font-mono bg-gray-100 px-3 py-1 rounded">connect your-server-ip</code>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-white p-6 rounded-xl border border-gray-200">
+                                <i class="ri-discord-line text-3xl text-np-blue mb-3"></i>
+                                <h4 class="text-lg font-bold text-np-dark mb-2">Discord Server</h4>
+                                <a href="#" class="inline-flex items-center text-np-blue hover:text-np-light-blue font-semibold">
+                                    Join Discord <i class="ri-external-link-line ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                    <a href="#" class="group bg-np-blue hover:bg-np-blue/90 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl">
+                        <i class="ri-discord-line"></i>
+                        <span>Apply on Discord</span>
+                        <i class="ri-arrow-right-line group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#" class="group border-2 border-np-blue text-np-blue hover:bg-np-blue hover:text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center space-x-2">
+                        <i class="ri-question-line"></i>
+                        <span>Have Questions?</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-np-dark text-white">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Logo Section -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-np-blue to-np-light-blue rounded-lg flex items-center justify-center">
+                            <i class="ri-shield-star-line text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold">Los Santos PD</div>
+                            <div class="text-sm text-gray-400">Professional Roleplay</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 max-w-md">
+                        Dedicated to providing the most realistic and professional law enforcement roleplay experience in Los Santos.
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">About</a></li>
+                        <li><a href="#departments" class="text-gray-400 hover:text-white transition-colors">Departments</a></li>
+                        <li><a href="#staff" class="text-gray-400 hover:text-white transition-colors">Staff</a></li>
+                        <li><a href="#guidelines" class="text-gray-400 hover:text-white transition-colors">Guidelines</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Connect</h4>
+                    <div class="space-y-3">
+                        <a href="#" class="flex items-center text-gray-400 hover:text-white transition-colors">
+                            <i class="ri-discord-line mr-2"></i>
+                            Discord Server
+                        </a>
+                        <a href="#" class="flex items-center text-gray-400 hover:text-white transition-colors">
+                            <i class="ri-global-line mr-2"></i>
+                            Website
+                        </a>
+                        <a href="#" class="flex items-center text-gray-400 hover:text-white transition-colors">
+                            <i class="ri-mail-line mr-2"></i>
+                            Contact Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8 text-center">
+                <p class="text-gray-400 mb-4">&copy; 2025 Los Santos Police Department. All rights reserved.</p>
+                <div class="text-sm">
+                    <span class="text-gray-500">Template by</span>
+                    <a href="https://fourtwenty.dev" target="_blank" rel="noopener" 
+                       class="inline-flex items-center text-gray-400 hover:text-white transition-colors ml-2 group">
+                        FourTwentyDevs
+                        <i class="ri-external-link-line ml-1 text-gray-500 group-hover:text-white transition-colors"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>
